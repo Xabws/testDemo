@@ -25,7 +25,7 @@ public class Demo2Activity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo2);
-        cardView =  findViewById(R.id.card_view);
+        cardView = findViewById(R.id.card_view);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

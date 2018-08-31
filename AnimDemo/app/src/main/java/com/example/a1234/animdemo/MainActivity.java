@@ -17,8 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        animView = findViewById(R.id.animview);
-        animInterpolationView = findViewById(R.id.animinter);
+        animView = (AnimView) findViewById(R.id.animview);
+        animInterpolationView = (AnimInterpolationView) findViewById(R.id.animinter);
         BlurKit.init(this);
         init();
     }
