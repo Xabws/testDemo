@@ -1,4 +1,4 @@
-package com.example.a1234.animdemo;
+package com.example.a1234.animdemo.customview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.a1234.animdemo.R;
 import com.example.a1234.animdemo.utils.BlurCallable;
 
 /**

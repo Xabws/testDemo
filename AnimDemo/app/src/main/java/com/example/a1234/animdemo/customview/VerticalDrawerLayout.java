@@ -1,4 +1,4 @@
-package com.example.a1234.animdemo;
+package com.example.a1234.animdemo.customview;
 
 import android.content.Context;
 import android.content.res.TypedArray;

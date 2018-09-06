@@ -1,22 +1,20 @@
-package com.example.a1234.animdemo;
+package com.example.a1234.animdemo.activity;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.a1234.animdemo.customview.DrawerView;
+import com.example.a1234.animdemo.R;
 import com.example.a1234.animdemo.utils.ContentUtil;
 
 /**

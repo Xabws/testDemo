@@ -1,17 +1,16 @@
-package com.example.a1234.animdemo;
+package com.example.a1234.animdemo.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.a1234.animdemo.utils.ContentUtil;
+import com.example.a1234.animdemo.customview.CardDialog;
+import com.example.a1234.animdemo.R;
 
 /**
  * Created by a1234 on 2018/8/16.

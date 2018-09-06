@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -25,10 +24,17 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    compile rootProject.ext.supportDependencies.supportAppcompat
+    compile "com.jakewharton:butterknife:8.4.0"//（这个是添加库）
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile rootProject.ext.supportDependencies.supportAppcompatV7
+    compile rootProject.ext.supportDependencies.supportAppcompatV4
+    compile rootProject.ext.supportDependencies.supportDesign
     compile rootProject.ext.supportDependencies.supportRecycleView
     compile rootProject.ext.supportDependencies.picasso
     compile rootProject.ext.supportDependencies.glide
     compile rootProject.ext.supportDependencies.supportCard
+    compile rootProject.ext.supportDependencies.okhttp
+   // compile rootProject.ext.supportDependencies.butterKnife
+    /**Dalvik 可执行文件分包支持库(65536问题)**/
+    compile "com.android.support:multidex:1.0.0"
 }

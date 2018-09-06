@@ -1,4 +1,4 @@
-package com.example.a1234.animdemo;
+package com.example.a1234.animdemo.customview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -7,14 +7,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
-import java.util.logging.Level;
 
 
 /**

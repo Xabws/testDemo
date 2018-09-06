@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/bg">
 
-    <com.example.a1234.animdemo.DrawerView
+    <com.example.a1234.animdemo.customview.DrawerView
         android:id="@+id/vertical_drawer"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -36,5 +36,5 @@
                 android:textSize="30sp" />
         </RelativeLayout>
 
-    </com.example.a1234.animdemo.DrawerView>
+    </com.example.a1234.animdemo.customview.DrawerView>
 </RelativeLayout>
