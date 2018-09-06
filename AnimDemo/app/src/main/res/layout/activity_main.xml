@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <include layout="@layout/main_toolbar"/>
+
+        <include layout="@layout/main_toolbar" />
         <!--主页界面-->
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,24 +21,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.example.a1234.animdemo.customview.AnimView
-                    android:id="@+id/animview"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerInParent="true" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <com.example.a1234.animdemo.customview.AnimInterpolationView
-                    android:id="@+id/animinter"
-                    android:layout_width="500dp"
-                    android:layout_height="500dp"
-                    android:layout_centerInParent="true" />
-
-                <TextView
-                    android:id="@+id/tv_3"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="#0f0" />
+                </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
@@ -46,9 +34,10 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
-        app:menu="@menu/main_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_head"
+        app:menu="@menu/main_menu" />
 
 </android.support.v4.widget.DrawerLayout>

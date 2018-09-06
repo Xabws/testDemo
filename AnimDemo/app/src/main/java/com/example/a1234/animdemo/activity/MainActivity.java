@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -13,24 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.a1234.animdemo.R;
 import com.example.a1234.animdemo.adapter.DrawerAdapter;
-import com.example.a1234.animdemo.customview.AnimInterpolationView;
-import com.example.a1234.animdemo.customview.AnimView;
 import com.example.a1234.animdemo.utils.blurkit.BlurKit;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    @BindView(R.id.animview)
-    AnimView animview;
-    @BindView(R.id.animinter)
-    AnimInterpolationView animinter;
-    @BindView(R.id.tv_3)
-    TextView tv3;
     DrawerAdapter drawerAdapter;
     @BindView(R.id.drawer)
     DrawerLayout drawer;
@@ -67,7 +59,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void init() {
-
+        onNavigationHeadClick();
        /* onViewClicked(animview);
         onViewClicked(animinter);
         onViewClicked(tv3);*/
@@ -98,7 +90,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @OnClick({R.id.animview, R.id.animinter, R.id.tv_3})
+   /* @OnClick({R.id.animview, R.id.animinter, R.id.tv_3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.animview:
@@ -111,6 +103,24 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, Demo3Activity.class));
                 break;
         }
+    }*/
+
+    private void onNavigationHeadClick(){
+     //   View drawerView = navigationView.inflateHeaderView(R.layout.navigation_head);
+        View drawerView = navigationView.getHeaderView(0);
+        final ImageView image_head =drawerView.findViewById(R.id.image_head);
+        image_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(image_head, "head", Snackbar.LENGTH_LONG)
+                        .setAction("dismiss", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                            }
+                        }).show();
+            }
+        });
     }
 
     private class DrawerToggle extends ActionBarDrawerToggle {
@@ -143,31 +153,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        String mString = null;
         switch (id) {
             case R.id.nav_notification:
-                mString = "通知";
+               startActivity(new Intent(MainActivity.this,Demo1Activity.class));
                 break;
             case R.id.nav_message:
-                mString = "私信";
+                startActivity(new Intent(MainActivity.this,Demo2Activity.class));
                 break;
             case R.id.nav_manage:
-                mString = "应用管理";
+                startActivity(new Intent(MainActivity.this,Demo3Activity.class));
                 break;
             case R.id.nav_theme:
-                mString = "主题风格";
                 break;
             case R.id.nav_setting:
-                mString = "设置";
                 break;
             case R.id.nav_suggestion:
-                mString = "意见反馈";
                 break;
             case R.id.nav_about:
-                mString = "关于";
                 break;
         }
-        toolbar.setTitle(mString);
+        toolbar.setTitle(item.getTitle());
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
