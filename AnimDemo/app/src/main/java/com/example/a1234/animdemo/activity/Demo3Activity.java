@@ -2,20 +2,25 @@ package com.example.a1234.animdemo.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.a1234.animdemo.R;
+import com.example.a1234.animdemo.component.DaggerUserComponent;
+import com.example.a1234.animdemo.data.User;
+import com.example.a1234.animdemo.module.UserModule;
 
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -31,41 +36,33 @@ import okhttp3.Response;
  */
 
 public class Demo3Activity extends Activity {
-    private TextView get, post,postfile,postform;
+    @BindView(R.id.get)
+    TextView get;
+    @BindView(R.id.post)
+    TextView post;
+    @BindView(R.id.postfile)
+    TextView postfile;
+    @BindView(R.id.postform)
+    TextView postform;
     private String TAG = "Demo3Activity";
+    @Named("name")
+    @Inject
+    User user;
+    @Named("context")
+    @Inject
+    User user2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo3);
-        get = findViewById(R.id.get);
-        post = findViewById(R.id.post);
-        postform=findViewById(R.id.postform);
-        postfile = findViewById(R.id.postfile);
-        get.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParamAsync();
-            }
-        });
-        post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postParamAsync();
-            }
-        });
-        postfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postFile();
-            }
-        });
-        postform.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postForm();
-            }
-        });
+        ButterKnife.bind(this);
+        DaggerUserComponent.builder().userModule(new UserModule(this, "timmy", "8")).build().inject(this);
+        user.Toast();
+        onViewClicked(get);
+        onViewClicked(post);
+        onViewClicked(postfile);
+        onViewClicked(postform);
     }
 
     /**
@@ -167,4 +164,21 @@ public class Demo3Activity extends Activity {
         });
     }
 
+    @OnClick({R.id.get, R.id.post, R.id.postfile, R.id.postform})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.get:
+                getParamAsync();
+                break;
+            case R.id.post:
+                postParamAsync();
+                break;
+            case R.id.postfile:
+                postFile();
+                break;
+            case R.id.postform:
+                postForm();
+                break;
+        }
+    }
 }

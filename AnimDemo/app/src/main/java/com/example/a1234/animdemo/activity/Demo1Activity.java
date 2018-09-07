@@ -13,15 +13,22 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.example.a1234.animdemo.MyApplication;
 import com.example.a1234.animdemo.customview.DrawerView;
 import com.example.a1234.animdemo.R;
 import com.example.a1234.animdemo.utils.ContentUtil;
+
+import javax.inject.Inject;
+
+import retrofit2.Retrofit;
 
 /**
  * Created by a1234 on 2018/8/16.
  */
 
 public class Demo1Activity extends Activity {
+    @Inject
+    Retrofit mRetrofit;
     private DrawerView bottomDrawerView;
     private TextView tv_content;
     RelativeLayout bg;
@@ -30,6 +37,8 @@ public class Demo1Activity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MyApplication)getApplication()).getAppComponent().inject(this);
+        Log.w("BMainActivity", mRetrofit.toString());
         setContentView(R.layout.activity_demo1);
         bottomDrawerView =  findViewById(R.id.vertical_drawer);
         draw_handle = findViewById(R.id.draw_handle);
