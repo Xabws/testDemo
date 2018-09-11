@@ -22,7 +22,8 @@
         </activity>
         <activity android:name=".activity.Demo1Activity"></activity>
         <activity android:name=".activity.Demo2Activity"></activity>
-        <activity android:name=".activity.Demo3Activity"></activity>
+        <activity android:name=".activity.NewsActivity"></activity>
+        <activity android:name=".activity.NewsDetailActivity"></activity>
     </application>
 
 </manifest>

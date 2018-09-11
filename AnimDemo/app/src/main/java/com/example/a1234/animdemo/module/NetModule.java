@@ -77,6 +77,7 @@ public class NetModule {
                 .baseUrl(mBaseUrl)
                 .client(mOkHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                //设置数据解析器
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }

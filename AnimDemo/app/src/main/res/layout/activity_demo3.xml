@@ -7,29 +7,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/get"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_news"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorAccent" />
-
-        <TextView
-            android:id="@+id/post"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/colorPrimary" />
-        <TextView
-            android:id="@+id/postfile"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#000000" />
-        <TextView
-            android:id="@+id/postform"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#00f" />
-
+            android:layout_height="match_parent" />
     </LinearLayout>
 </RelativeLayout>

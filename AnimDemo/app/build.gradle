@@ -37,6 +37,8 @@ dependencies {
     compile rootProject.ext.supportDependencies.gson
     implementation rootProject.ext.supportDependencies.okhttp
     implementation rootProject.ext.supportDependencies.retrofit2
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
     // compile rootProject.ext.supportDependencies.butterKnife
     /**Dalvik 可执行文件分包支持库(65536问题)**/
     compile "com.android.support:multidex:1.0.0"

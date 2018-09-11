@@ -8,6 +8,7 @@ import com.example.a1234.animdemo.module.AppModule;
 import com.example.a1234.animdemo.module.NetModule;
 
 public class MyApplication extends Application {
+    //MyApplication 要提供出Component，并且保证构建一次
     private AppComponent appComponent;
 
     @Override
@@ -15,7 +16,7 @@ public class MyApplication extends Application {
         super.onCreate();
         appComponent = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .netModule(new NetModule("https://github.com/"))
+                .netModule(new NetModule(API.BASEURL))
                 .build();
     }
 

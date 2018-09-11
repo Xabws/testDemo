@@ -23,16 +23,12 @@ import retrofit2.Retrofit;
  */
 
 public class Demo2Activity extends Activity {
-    @Inject
-    Retrofit mRetrofit;
     private CardView cardView;
     private ImageView iv;
     private CardDialog cardDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApplication)getApplication()).getAppComponent().inject(this);
-        Log.w("BMainActivity", mRetrofit.toString());
         setContentView(R.layout.activity_demo2);
         cardView = findViewById(R.id.card_view);
         cardView.setOnClickListener(new View.OnClickListener() {

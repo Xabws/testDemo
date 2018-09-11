@@ -16,14 +16,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.a1234.animdemo.R;
-import com.example.a1234.animdemo.adapter.DrawerAdapter;
 import com.example.a1234.animdemo.utils.blurkit.BlurKit;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerAdapter drawerAdapter;
     @BindView(R.id.drawer)
     DrawerLayout drawer;
     @BindView(R.id.toolbar)
@@ -52,6 +49,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void initView(Bundle savedInstanceState) {
 
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -100,7 +99,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, Demo2Activity.class));
                 break;
             case R.id.tv_3:
-                startActivity(new Intent(MainActivity.this, Demo3Activity.class));
+                startActivity(new Intent(MainActivity.this, NewsActivity.class));
                 break;
         }
     }*/
@@ -161,7 +160,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this,Demo2Activity.class));
                 break;
             case R.id.nav_manage:
-                startActivity(new Intent(MainActivity.this,Demo3Activity.class));
+                startActivity(new Intent(MainActivity.this,NewsActivity.class));
                 break;
             case R.id.nav_theme:
                 break;

@@ -27,8 +27,6 @@ import retrofit2.Retrofit;
  */
 
 public class Demo1Activity extends Activity {
-    @Inject
-    Retrofit mRetrofit;
     private DrawerView bottomDrawerView;
     private TextView tv_content;
     RelativeLayout bg;
@@ -37,8 +35,6 @@ public class Demo1Activity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApplication)getApplication()).getAppComponent().inject(this);
-        Log.w("BMainActivity", mRetrofit.toString());
         setContentView(R.layout.activity_demo1);
         bottomDrawerView =  findViewById(R.id.vertical_drawer);
         draw_handle = findViewById(R.id.draw_handle);

@@ -51,7 +51,7 @@ public class UserModule {
         return this.age;
     }
 
-    @Named("name")
+    @Named("user")
     @Singleton
     @Provides
     public User provideUser( @Named("Providesname")String name, @Named("Providesage")String age, Context context) {
