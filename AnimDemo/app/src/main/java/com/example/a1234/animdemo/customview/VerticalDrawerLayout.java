@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IntDef;
-import android.support.v4.view.KeyEventCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -378,7 +377,7 @@ public class VerticalDrawerLayout extends ViewGroup {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && isDrawerVisible()) {
-            KeyEventCompat.startTracking(event);
+            event.startTracking();
             return true;
         }
         return super.onKeyDown(keyCode, event);

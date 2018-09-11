@@ -31,20 +31,20 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dp"
                 android:padding="18dp"
-                android:src="@drawable/like"
-                />
+                android:src="@drawable/like" />
 
             <TextView
                 android:id="@+id/tv_like"
-                app:layout_constrainedWidth="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:text="0"
                 android:src="@drawable/like"
+                android:text="0"
+                android:textSize="20sp"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintLeft_toRightOf="@+id/iv_like" />
         </android.support.constraint.ConstraintLayout>
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/cl_comment"
             android:layout_width="wrap_content"
@@ -58,36 +58,87 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="6dp"
                 android:padding="18dp"
-                android:src="@drawable/comment"
-                />
+                android:src="@drawable/comment" />
 
             <TextView
                 android:id="@+id/tv_comment"
-                app:layout_constrainedWidth="true"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:text="0"
                 android:src="@drawable/like"
+                android:text="0"
+                android:textSize="20sp"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintLeft_toRightOf="@+id/iv_comment" />
         </android.support.constraint.ConstraintLayout>
+
         <ImageView
             android:id="@+id/iv_share"
             android:layout_width="60dp"
             android:layout_height="match_parent"
-            app:layout_constraintEnd_toStartOf="@+id/cl_comment"
             android:padding="18dp"
-            android:src="@drawable/share"/>
+            android:src="@drawable/share"
+            app:layout_constraintEnd_toStartOf="@+id/cl_comment" />
     </android.support.constraint.ConstraintLayout>
 
-    <WebView
-        android:id="@+id/wv_content"
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_title"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-</android.support.constraint.ConstraintLayout>
-<!-- ConstraintLayout 不支持match_parent属性，但支持wrap_content属性。如果你需要用match_parent，将宽度/高度指定为0dp，然后设置left_toleft,right_toRight为parent即可实现横向充满，同理设置竖向的-->
+        app:layout_constraintTop_toTopOf="parent">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--高度与titleview相同，用于占位-->
+        <View
+            android:id="@+id/view_translucent"
+            android:background="@color/translucent"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+        <android.support.constraint.ConstraintLayout
+            app:layout_constraintTop_toBottomOf="@+id/view_translucent"
+            android:id="@+id/story_title"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <com.example.a1234.animdemo.customview.ResizableImageView
+                android:id="@+id/iv_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="15dp"
+                android:padding="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textSize="22sp"
+                android:textColor="#fff"
+                android:text="test"/>
+            <TextView
+                android:id="@+id/tv_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/gray_white"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </android.support.constraint.ConstraintLayout>
+        <com.example.a1234.animdemo.customview.NoScrollWebView
+            android:id="@+id/wv_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/story_title"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout><!-- ConstraintLayout 不支持match_parent属性，但支持wrap_content属性。如果你需要用match_parent，将宽度/高度指定为0dp，然后设置left_toleft,right_toRight为parent即可实现横向充满，同理设置竖向的-->

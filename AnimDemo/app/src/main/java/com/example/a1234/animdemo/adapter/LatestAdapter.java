@@ -1,6 +1,7 @@
 package com.example.a1234.animdemo.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,7 +72,7 @@ public class LatestAdapter extends RecyclerView.Adapter {
 
     static class DrawerHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.rl_main)
-        RelativeLayout rl_main;
+        CardView rl_main;
         @BindView(R.id.iv_cover)
         ImageView ivCover;
         @BindView(R.id.tv_title)

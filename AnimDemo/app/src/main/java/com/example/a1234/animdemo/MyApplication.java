@@ -7,6 +7,8 @@ import com.example.a1234.animdemo.component.DaggerAppComponent;
 import com.example.a1234.animdemo.module.AppModule;
 import com.example.a1234.animdemo.module.NetModule;
 
+import java.io.InputStream;
+
 public class MyApplication extends Application {
     //MyApplication 要提供出Component，并且保证构建一次
     private AppComponent appComponent;
@@ -18,6 +20,9 @@ public class MyApplication extends Application {
                 .appModule(new AppModule(this))
                 .netModule(new NetModule(API.BASEURL))
                 .build();
+    }
+
+    private void init(){
     }
 
     public AppComponent getAppComponent() {

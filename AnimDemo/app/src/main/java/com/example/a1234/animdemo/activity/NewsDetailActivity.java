@@ -1,6 +1,9 @@
 package com.example.a1234.animdemo.activity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -10,15 +13,19 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1234.animdemo.API;
 import com.example.a1234.animdemo.R;
+import com.example.a1234.animdemo.customview.ResizableImageView;
 import com.example.a1234.animdemo.data.ZHContent;
 import com.example.a1234.animdemo.eventbus.MessageEvent;
 import com.example.a1234.animdemo.retrofit.inter.GetNewsDetail_Inter;
 import com.example.a1234.animdemo.utils.HtmlUtil;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,8 +57,19 @@ public class NewsDetailActivity extends BaseActivity {
     ImageView ivShare;
     @BindView(R.id.cl_title)
     ConstraintLayout clTitle;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.tv_source)
+    TextView tvSource;
+    @BindView(R.id.story_title)
+    ConstraintLayout storyTitle;
+    @BindView(R.id.iv_cover)
+    ResizableImageView ivCover;
+    @BindView(R.id.scrollview)
+    ScrollView scrollview;
     private String NewsId;
     private ZHContent zhContent;
+    private int beforeScrollY = 0;
 
     @Override
     public int getContentViewId() {
@@ -79,6 +97,29 @@ public class NewsDetailActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ZHContent> call, Response<ZHContent> response) {
                 zhContent = response.body();
+                tvTitle.setText(zhContent.getTitle());
+                tvSource.setText(zhContent.getImage_source());
+                Picasso.get().load(zhContent.getImage()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        if (ivCover.getWidth() != 0 && ivCover.getHeight() != 0) {
+                            float ratio = (float) ivCover.getWidth() / (float) ivCover.getHeight();
+                            ivCover.setBackground(new BitmapDrawable(cropBitmap(bitmap, ratio)));
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
                 String htmlData = HtmlUtil.createHtmlData(zhContent.getBody(), zhContent.getCss(), zhContent.getJs());
                 addWebView(htmlData);
             }
@@ -99,6 +140,24 @@ public class NewsDetailActivity extends BaseActivity {
         wvContent.addJavascriptInterface(new JavaScriptInterface(this), "imagelistner");//这个是给图片设置点击监听的，如果你项目需要webview中图片，点击查看大图功能，可以这么添加
         // webSettings.setBuiltInZoomControls(true); // 显示放大缩小
         // webSettings.setSupportZoom(true); // 可以缩放
+        scrollview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                beforeScrollY = oldScrollY;
+                if (oldScrollY > 0) {
+                    if (scrollY < (storyTitle.getHeight())) {
+                        float degree = 1 - (float) scrollY / (float) storyTitle.getHeight();
+                        clTitle.setAlpha(degree);
+                        Log.d("ssss", degree + "");
+                        clTitle.bringToFront();
+                        clTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        clTitle.setVisibility(View.INVISIBLE);
+                    }
+                }
+                Log.d("sssss", scrollY + " " + oldScrollY + " " + storyTitle.getHeight());
+            }
+        });
     }
 
     private void addWebView(String html) {
@@ -200,6 +259,17 @@ public class NewsDetailActivity extends BaseActivity {
             intent.setClass(context, BigImageActivity.class);//BigImageActivity查看大图的类，自己定义就好
             context.startActivity(intent);*/
         }
+    }
+
+    /**
+     * @param bitmap
+     * @param ratio:width/height
+     * @return
+     */
+    private Bitmap cropBitmap(Bitmap bitmap, float ratio) {
+        int height;
+        height = (int) (bitmap.getWidth() / ratio);
+        return Bitmap.createBitmap(bitmap, 0, bitmap.getHeight() - height, bitmap.getWidth(), height);
     }
 
 }
