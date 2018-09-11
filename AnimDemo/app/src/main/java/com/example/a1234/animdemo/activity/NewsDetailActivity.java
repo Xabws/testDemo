@@ -21,8 +21,10 @@ import com.example.a1234.animdemo.API;
 import com.example.a1234.animdemo.R;
 import com.example.a1234.animdemo.customview.ResizableImageView;
 import com.example.a1234.animdemo.data.ZHContent;
+import com.example.a1234.animdemo.data.ZHNewsExtra;
 import com.example.a1234.animdemo.eventbus.MessageEvent;
 import com.example.a1234.animdemo.retrofit.inter.GetNewsDetail_Inter;
+import com.example.a1234.animdemo.retrofit.inter.GetNewsExtra_Inter;
 import com.example.a1234.animdemo.utils.HtmlUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -69,6 +71,7 @@ public class NewsDetailActivity extends BaseActivity {
     ScrollView scrollview;
     private String NewsId;
     private ZHContent zhContent;
+    private ZHNewsExtra zhNewsExtra;
     private int beforeScrollY = 0;
 
     @Override
@@ -88,8 +91,8 @@ public class NewsDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        GetNewsDetail_Inter getNewsDetail_inter = retrofit.create(GetNewsDetail_Inter.class);
         StringBuffer stringBuffer = new StringBuffer();
+        GetNewsDetail_Inter getNewsDetail_inter = retrofit.create(GetNewsDetail_Inter.class);
         stringBuffer.append(API.NEWS);
         stringBuffer.append(NewsId);
         Call<ZHContent> call = getNewsDetail_inter.getLatest(stringBuffer.toString());
@@ -129,6 +132,26 @@ public class NewsDetailActivity extends BaseActivity {
                 Toast.makeText(NewsDetailActivity.this, "error", Toast.LENGTH_SHORT);
             }
         });
+        GetNewsExtra_Inter getNewsExtra_inter = retrofit.create(GetNewsExtra_Inter.class);
+        stringBuffer = new StringBuffer();
+        stringBuffer.append(API.NEWS_EXTRA);
+        stringBuffer.append(NewsId);
+        Call<ZHNewsExtra> extraCall =  getNewsExtra_inter.getLatest(stringBuffer.toString());
+        extraCall.enqueue(new Callback<ZHNewsExtra>() {
+            @Override
+            public void onResponse(Call<ZHNewsExtra> call, Response<ZHNewsExtra> response) {
+                zhNewsExtra =response.body();
+                if (zhNewsExtra!=null){
+                    tvComment.setText(zhNewsExtra.getComments()+"");
+                    tvLike.setText(zhNewsExtra.getPopularity()+"");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ZHNewsExtra> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -140,6 +163,7 @@ public class NewsDetailActivity extends BaseActivity {
         wvContent.addJavascriptInterface(new JavaScriptInterface(this), "imagelistner");//这个是给图片设置点击监听的，如果你项目需要webview中图片，点击查看大图功能，可以这么添加
         // webSettings.setBuiltInZoomControls(true); // 显示放大缩小
         // webSettings.setSupportZoom(true); // 可以缩放
+        clTitle.bringToFront();
         scrollview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
@@ -148,10 +172,11 @@ public class NewsDetailActivity extends BaseActivity {
                     if (scrollY < (storyTitle.getHeight())) {
                         float degree = 1 - (float) scrollY / (float) storyTitle.getHeight();
                         clTitle.setAlpha(degree);
-                        Log.d("ssss", degree + "");
                         clTitle.bringToFront();
+                        if (clTitle.getVisibility()==View.INVISIBLE)
                         clTitle.setVisibility(View.VISIBLE);
                     } else {
+                        if (clTitle.getVisibility()==View.VISIBLE)
                         clTitle.setVisibility(View.INVISIBLE);
                     }
                 }

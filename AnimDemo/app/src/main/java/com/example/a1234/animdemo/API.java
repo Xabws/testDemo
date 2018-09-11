@@ -16,7 +16,7 @@ public class API {
     /**
      * 输入新闻的ID，获取对应新闻的额外信息，如评论数量，所获的『赞』的数量。
      **/
-    public static String NEWS_EXTRA = "story-extra/#{$}";
+    public static String NEWS_EXTRA = "story-extra/";
     /***
      * 新闻对应长评论查看
      * 使用在 最新消息 中获得的 id，
