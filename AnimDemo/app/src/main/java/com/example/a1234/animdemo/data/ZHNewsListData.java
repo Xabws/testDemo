@@ -21,7 +21,7 @@ import java.util.ArrayList;
  }]
  }
  */
-public class ZHNewsLatestData {
+public class ZHNewsListData {
     String date;
     ArrayList<ZHStory>stories;
 
@@ -43,7 +43,7 @@ public class ZHNewsLatestData {
 
     @Override
     public String toString() {
-        return "ZHNewsLatestData{" +
+        return "ZHNewsListData{" +
                 "date='" + date + '\'' +
                 ", stories=" + stories +
                 '}';

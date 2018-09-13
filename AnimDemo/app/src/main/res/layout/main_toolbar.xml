@@ -5,16 +5,16 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
+    android:background="@color/main_color"
     android:minHeight="?attr/actionBarSize"
     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <ImageView
+   <!-- <ImageView
         android:id="@+id/iv_music"
         android:padding="10dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center"
-        android:src="@drawable/music" />
+        android:src="@drawable/music" />-->
 </android.support.v7.widget.Toolbar>

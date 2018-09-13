@@ -23,8 +23,7 @@ import com.example.a1234.animdemo.customview.ResizableImageView;
 import com.example.a1234.animdemo.data.ZHContent;
 import com.example.a1234.animdemo.data.ZHNewsExtra;
 import com.example.a1234.animdemo.eventbus.MessageEvent;
-import com.example.a1234.animdemo.retrofit.inter.GetNewsDetail_Inter;
-import com.example.a1234.animdemo.retrofit.inter.GetNewsExtra_Inter;
+import com.example.a1234.animdemo.retrofit.inter.RetrofitAPI_Interface;
 import com.example.a1234.animdemo.utils.HtmlUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -92,10 +91,10 @@ public class NewsDetailActivity extends BaseActivity {
 
     private void initData() {
         StringBuffer stringBuffer = new StringBuffer();
-        GetNewsDetail_Inter getNewsDetail_inter = retrofit.create(GetNewsDetail_Inter.class);
+        RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
         stringBuffer.append(API.NEWS);
         stringBuffer.append(NewsId);
-        Call<ZHContent> call = getNewsDetail_inter.getLatest(stringBuffer.toString());
+        Call<ZHContent> call = retrofitAPI_interface.getNewsDetail(stringBuffer.toString());
         call.enqueue(new Callback<ZHContent>() {
             @Override
             public void onResponse(Call<ZHContent> call, Response<ZHContent> response) {
@@ -132,11 +131,10 @@ public class NewsDetailActivity extends BaseActivity {
                 Toast.makeText(NewsDetailActivity.this, "error", Toast.LENGTH_SHORT);
             }
         });
-        GetNewsExtra_Inter getNewsExtra_inter = retrofit.create(GetNewsExtra_Inter.class);
         stringBuffer = new StringBuffer();
         stringBuffer.append(API.NEWS_EXTRA);
         stringBuffer.append(NewsId);
-        Call<ZHNewsExtra> extraCall =  getNewsExtra_inter.getLatest(stringBuffer.toString());
+        Call<ZHNewsExtra> extraCall =  retrofitAPI_interface.getNewsExtra(stringBuffer.toString());
         extraCall.enqueue(new Callback<ZHNewsExtra>() {
             @Override
             public void onResponse(Call<ZHNewsExtra> call, Response<ZHNewsExtra> response) {

@@ -16,17 +16,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/layout_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:descendantFocusability="afterDescendants">
 
-                <RelativeLayout
+                <com.example.a1234.animdemo.customview.SwipeRefreshPagerLayout
+                    android:id="@+id/layout_reading_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                </RelativeLayout>
-            </LinearLayout>
+                    <com.example.a1234.animdemo.customview.loadmorerecycleview.LoadMoreRecyclerView
+                        android:id="@+id/rv_news"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </com.example.a1234.animdemo.customview.SwipeRefreshPagerLayout>
+            </FrameLayout>
         </RelativeLayout>
     </LinearLayout>
 

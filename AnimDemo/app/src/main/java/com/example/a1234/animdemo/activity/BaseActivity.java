@@ -1,8 +1,6 @@
 package com.example.a1234.animdemo.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.a1234.animdemo.MyApplication;
