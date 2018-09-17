@@ -27,6 +27,7 @@ import java.util.concurrent.Callable;
 public class BlurCallable implements Callable<Drawable> {
     private Activity activity;
     private int radius = 15;//模糊程度;
+
     @Override
     public Drawable call() throws Exception {
         return applyBlur();
@@ -54,7 +55,7 @@ public class BlurCallable implements Callable<Drawable> {
         return blur(bmp2);
     }
 
-    public void setRadius(int radius){
+    public void setRadius(int radius) {
         this.radius = radius;
     }
 
@@ -65,7 +66,7 @@ public class BlurCallable implements Callable<Drawable> {
                 (int) (ContentUtil.getScreenWidth(activity) / scaleFactor),
                 (int) ((ContentUtil.getScreenHeight(activity) - getOtherHeight()) / scaleFactor));
 */
-       // overlay = ImageUtil.doBlur(overlay, (int) radius, false);
+        // overlay = ImageUtil.doBlur(overlay, (int) radius, false);
         bkg = BlurKit.getInstance().blur(bkg, (int) radius);
         Drawable drawable = new BitmapDrawable(activity.getResources(), bkg);
         return drawable;
@@ -108,7 +109,7 @@ public class BlurCallable implements Callable<Drawable> {
         return vh;
     }
 
-    public void setActivity(Activity activity){
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
