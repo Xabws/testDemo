@@ -29,6 +29,8 @@ import com.example.a1234.miracle.utils.HtmlUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Observable;
 
 import butterknife.BindView;
@@ -205,7 +207,6 @@ public class NewsDetailActivity extends BaseActivity {
                             clTitle.setVisibility(View.INVISIBLE);
                     }
                 }
-                Log.d("sssss", scrollY + " " + oldScrollY + " " + storyTitle.getHeight());
             }
         });
     }
@@ -234,6 +235,7 @@ public class NewsDetailActivity extends BaseActivity {
             case R.id.cl_like:
                 break;
             case R.id.cl_comment:
+                EventBus.getDefault().postSticky(new MessageEvent(NewsId));
                 startActivity(new Intent(this, NewsCommentActivity.class));
                 break;
             case R.id.iv_share:

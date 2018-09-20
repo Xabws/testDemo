@@ -1,10 +1,14 @@
 package com.example.a1234.miracle.retrofit.inter;
 
 import com.example.a1234.miracle.API;
+import com.example.a1234.miracle.data.ZHCommend;
+import com.example.a1234.miracle.data.ZHCommendData;
 import com.example.a1234.miracle.data.ZHContent;
 import com.example.a1234.miracle.data.ZHNewsExtra;
 import com.example.a1234.miracle.data.ZHNewsListData;
 
+
+import java.util.ArrayList;
 
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -36,8 +40,8 @@ public interface RetrofitAPI_Interface {
     Observable<ZHNewsListData> getOldNews(@Path("date") long date);
 
     @GET(API.NEWS_COMMENT_LONG)
-    Observable<ZHNewsListData> getLongNewsComment(@Path("newsId") long date);
+    Observable<ZHCommend> getLongNewsComment(@Path("newsId") String newsId);
 
     @GET(API.NEWS_COMMENT_SHORT)
-    Observable<ZHNewsListData> getShortNewsComment(@Path("newsId") long date);
+    Observable<ZHCommend> getShortNewsComment(@Path("newsId") String newsId);
 }
