@@ -1,6 +1,7 @@
 package com.example.a1234.miracle.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,8 +29,15 @@ import com.example.a1234.miracle.utils.HtmlUtil;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.Observable;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -90,66 +98,85 @@ public class NewsDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        StringBuffer stringBuffer = new StringBuffer();
         RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
-        stringBuffer.append(API.NEWS);
-        stringBuffer.append(NewsId);
-        Call<ZHContent> call = retrofitAPI_interface.getNewsDetail(stringBuffer.toString());
-        call.enqueue(new Callback<ZHContent>() {
-            @Override
-            public void onResponse(Call<ZHContent> call, Response<ZHContent> response) {
-                zhContent = response.body();
-                tvTitle.setText(zhContent.getTitle());
-                tvSource.setText(zhContent.getImage_source());
-                Picasso.get().load(zhContent.getImage()).into(new Target() {
+        io.reactivex.Observable<ZHContent> observable = retrofitAPI_interface.getNewsDetail(NewsId);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ZHContent>() {
                     @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        if (ivCover.getWidth() != 0 && ivCover.getHeight() != 0) {
-                            float ratio = (float) ivCover.getWidth() / (float) ivCover.getHeight();
-                            ivCover.setBackground(new BitmapDrawable(cropBitmap(bitmap, ratio)));
-
-                        }
+                    public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                    public void onNext(ZHContent zhContent) {
+                        NewsDetailActivity.this.zhContent = zhContent;
+                        tvTitle.setText(zhContent.getTitle());
+                        tvSource.setText(zhContent.getImage_source());
+                        Picasso.get().load(zhContent.getImage()).into(new Target() {
+                            @Override
+                            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                                if (ivCover.getWidth() != 0 && ivCover.getHeight() != 0) {
+                                    float ratio = (float) ivCover.getWidth() / (float) ivCover.getHeight();
+                                    ivCover.setBackground(new BitmapDrawable(cropBitmap(bitmap, ratio)));
+
+                                }
+                            }
+
+                            @Override
+                            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                            }
+
+                            @Override
+                            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                            }
+                        });
+                        String htmlData = HtmlUtil.createHtmlData(zhContent.getBody(), zhContent.getCss(), zhContent.getJs());
+                        addWebView(htmlData);
+
 
                     }
 
                     @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                    public void onError(Throwable e) {
+                        Toast.makeText(NewsDetailActivity.this, "error", Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
 
                     }
                 });
-                String htmlData = HtmlUtil.createHtmlData(zhContent.getBody(), zhContent.getCss(), zhContent.getJs());
-                addWebView(htmlData);
-            }
+        io.reactivex.Observable<ZHNewsExtra> extra_observable = retrofitAPI_interface.getNewsExtra(NewsId);
+        extra_observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ZHNewsExtra>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-            @Override
-            public void onFailure(Call<ZHContent> call, Throwable t) {
-                Toast.makeText(NewsDetailActivity.this, "error", Toast.LENGTH_SHORT);
-            }
-        });
-        stringBuffer = new StringBuffer();
-        stringBuffer.append(API.NEWS_EXTRA);
-        stringBuffer.append(NewsId);
-        Call<ZHNewsExtra> extraCall =  retrofitAPI_interface.getNewsExtra(stringBuffer.toString());
-        extraCall.enqueue(new Callback<ZHNewsExtra>() {
-            @Override
-            public void onResponse(Call<ZHNewsExtra> call, Response<ZHNewsExtra> response) {
-                zhNewsExtra =response.body();
-                if (zhNewsExtra!=null){
-                    tvComment.setText(zhNewsExtra.getComments()+"");
-                    tvLike.setText(zhNewsExtra.getPopularity()+"");
-                }
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<ZHNewsExtra> call, Throwable t) {
+                    @Override
+                    public void onNext(ZHNewsExtra zhNewsExtra) {
+                        zhNewsExtra = zhNewsExtra;
+                        if (zhNewsExtra != null) {
+                            tvComment.setText(zhNewsExtra.getComments() + "");
+                            tvLike.setText(zhNewsExtra.getPopularity() + "");
+                        }
+                    }
 
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
@@ -171,11 +198,11 @@ public class NewsDetailActivity extends BaseActivity {
                         float degree = 1 - (float) scrollY / (float) storyTitle.getHeight();
                         clTitle.setAlpha(degree);
                         clTitle.bringToFront();
-                        if (clTitle.getVisibility()==View.INVISIBLE)
-                        clTitle.setVisibility(View.VISIBLE);
+                        if (clTitle.getVisibility() == View.INVISIBLE)
+                            clTitle.setVisibility(View.VISIBLE);
                     } else {
-                        if (clTitle.getVisibility()==View.VISIBLE)
-                        clTitle.setVisibility(View.INVISIBLE);
+                        if (clTitle.getVisibility() == View.VISIBLE)
+                            clTitle.setVisibility(View.INVISIBLE);
                     }
                 }
                 Log.d("sssss", scrollY + " " + oldScrollY + " " + storyTitle.getHeight());
@@ -207,6 +234,7 @@ public class NewsDetailActivity extends BaseActivity {
             case R.id.cl_like:
                 break;
             case R.id.cl_comment:
+                startActivity(new Intent(this, NewsCommentActivity.class));
                 break;
             case R.id.iv_share:
                 break;

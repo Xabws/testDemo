@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.utils.BlurCallable;
+
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by a1234 on 2018/8/23.
@@ -103,9 +107,12 @@ public class CardDialog implements View.OnClickListener {
 
     private void setApplyBlur() {
         BlurCallable blurCallable = new BlurCallable();
+        FutureTask<Drawable>futureTask = new FutureTask<>(blurCallable);
         blurCallable.setActivity((Activity) context);
         try {
-            background.setBackground(blurCallable.call());
+            background.setBackground(futureTask.get(3000,TimeUnit.MILLISECONDS));
+            if (futureTask.isDone())
+                futureTask.cancel(false);
             blurCallable.setActivity(null);
         } catch (Exception e) {
             blurCallable.setActivity(null);

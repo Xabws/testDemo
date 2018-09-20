@@ -34,6 +34,12 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -99,8 +105,45 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             rvNews.setAdapter(latestAdapter);
         }
         RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
-        Call<ZHNewsListData> call = retrofitAPI_interface.getLatest();
-        call.enqueue(new Callback<ZHNewsListData>() {
+        Observable<ZHNewsListData> observable = retrofitAPI_interface.getLatest();//获取观察者对象
+        /**
+         * 在RxJava 中，Scheduler ——调度器，相当于线程控制器，RxJava 通过它来指定每一段代码应该运行在什么样的线程。RxJava 已经内置了几个 Scheduler ，它们已经适合大多数的使用场景：
+         Schedulers.immediate(): 直接在当前线程运行，相当于不指定线程。这是默认的 Scheduler。
+         Schedulers.newThread(): 总是启用新线程，并在新线程执行操作。
+         Schedulers.io(): I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。
+         Schedulers.computation(): 计算所使用的 Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU。
+         另外， Android 还有一个专用的 AndroidSchedulers.mainThread()，它指定的操作将在 Android 主线程运行。
+         */
+        observable.subscribeOn(Schedulers.io())// 指定 subscribe() 发生在 IO 线程
+                .observeOn(AndroidSchedulers.mainThread())//指定 Subscriber 的回调发生在主线程
+                .subscribe(new Observer<ZHNewsListData>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ZHNewsListData zhNewsListData) {
+                        currentDate = Long.parseLong(zhNewsListData.getDate());
+                        zhStoryArrayList = zhNewsListData.getStories();
+                        latestAdapter.setData(zhStoryArrayList);
+                        latestAdapter.notifyDataSetChanged();
+                        if (layoutReadingContent.isRefreshing())
+                            layoutReadingContent.setRefreshing(false);
+                        mRefreshState = STATE_REFRESH_FINISH;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        /*call.enqueue(new Callback<ZHNewsListData>() {
             @Override
             public void onResponse(Call<ZHNewsListData> call, Response<ZHNewsListData> response) {
                 currentDate = Long.parseLong(response.body().getDate());
@@ -117,7 +160,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
             }
 
-        });
+        });*/
     }
 
     /**
@@ -139,12 +182,42 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             rvNews.setAdapter(latestAdapter);
         }
         RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("news/");
-        stringBuffer.append("before/");
-        stringBuffer.append(date);
-        Call<ZHNewsListData> call = retrofitAPI_interface.getOldNews(stringBuffer.toString());
-        call.enqueue(new Callback<ZHNewsListData>() {
+        Observable<ZHNewsListData> observable = retrofitAPI_interface.getOldNews(date);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ZHNewsListData>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ZHNewsListData zhNewsListData) {
+                        if (zhNewsListData != null) {
+                            if (zhStoryArrayList == null) {
+                                zhStoryArrayList = zhNewsListData.getStories();
+                            } else {
+                                zhStoryArrayList.addAll(zhNewsListData.getStories());
+                            }
+                            latestAdapter.setData(zhStoryArrayList);
+                            latestAdapter.notifyDataSetChanged();
+                        }
+                        if (layoutReadingContent.isRefreshing())
+                            layoutReadingContent.setRefreshing(false);
+                        mRefreshState = STATE_REFRESH_FINISH;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+       /* call.enqueue(new Callback<ZHNewsListData>() {
             @Override
             public void onResponse(Call<ZHNewsListData> call, Response<ZHNewsListData> response) {
                 if (response != null) {
@@ -166,7 +239,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
             }
 
-        });
+        });*/
     }
 
     @Override
