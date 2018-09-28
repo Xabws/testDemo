@@ -1,24 +1,22 @@
 package com.example.a1234.miracle.activity;
 
-import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.CommendAdapter;
-import com.example.a1234.miracle.adapter.LatestAdapter;
+import com.example.a1234.miracle.customview.FullyLinearLayoutManager2;
 import com.example.a1234.miracle.data.ZHCommend;
 import com.example.a1234.miracle.data.ZHCommendData;
 import com.example.a1234.miracle.eventbus.MessageEvent;
 import com.example.a1234.miracle.retrofit.inter.RetrofitAPI_Interface;
 import com.example.a1234.miracle.utils.LogUtils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -39,16 +37,23 @@ public class NewsCommentActivity extends BaseActivity {
     ConstraintLayout clTitle;
     @BindView(R.id.tv_long)
     TextView tvLong;
+    @BindView(R.id.tv_short)
+    TextView tvShort;
     @BindView(R.id.cl_long)
     ConstraintLayout clLong;
     @BindView(R.id.rv_long)
     RecyclerView rvLong;
+    @BindView(R.id.rv_short)
+    RecyclerView rv_short;
     @BindView(R.id.bg)
     ConstraintLayout bg;
+    @BindView(R.id.iv_down)
+    ImageView ivDown;
     private String newsId;
     private ArrayList<ZHCommendData> longcommend;
     private ArrayList<ZHCommendData> shortcommend;
-    private CommendAdapter commendAdapter;
+    private CommendAdapter commendLongAdapter;
+    private CommendAdapter commendShortAdapter;
 
     @Override
     public int getContentViewId() {
@@ -67,14 +72,15 @@ public class NewsCommentActivity extends BaseActivity {
     }
 
     private void initData() {
-        if (commendAdapter == null) {
-            commendAdapter = new CommendAdapter(this, new CommendAdapter.OnItemClickListener() {
+        rv_short.setVisibility(View.GONE);
+        if (commendLongAdapter == null) {
+            commendLongAdapter = new CommendAdapter(this, new CommendAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
                 }
             });
-            rvLong.setLayoutManager(new LinearLayoutManager(this));
-            rvLong.setAdapter(commendAdapter);
+            rvLong.setLayoutManager(new FullyLinearLayoutManager2(this));
+            rvLong.setAdapter(commendLongAdapter);
         }
         RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
         Observable<ZHCommend> observable = retrofitAPI_interface.getLongNewsComment(newsId);
@@ -89,9 +95,12 @@ public class NewsCommentActivity extends BaseActivity {
                     @Override
                     public void onNext(ZHCommend zhCommend) {
                         longcommend = zhCommend.getComments();
-                        commendAdapter.setData(longcommend);
-                        commendAdapter.notifyDataSetChanged();
-                        LogUtils.d(zhCommend.toString());
+                        StringBuffer stringBuffer = new StringBuffer();
+                        stringBuffer.append(longcommend.size());
+                        stringBuffer.append("条长评");
+                        tvLong.setText(stringBuffer.toString());
+                        commendLongAdapter.setData(longcommend);
+                        commendLongAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -104,6 +113,15 @@ public class NewsCommentActivity extends BaseActivity {
 
                     }
                 });
+        if (commendShortAdapter == null) {
+            commendShortAdapter = new CommendAdapter(this, new CommendAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                }
+            });
+            rv_short.setLayoutManager(new FullyLinearLayoutManager2(this));
+            rv_short.setAdapter(commendShortAdapter);
+        }
         Observable<ZHCommend> extra_observable = retrofitAPI_interface.getShortNewsComment(newsId);
         extra_observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -116,6 +134,13 @@ public class NewsCommentActivity extends BaseActivity {
                     @Override
                     public void onNext(ZHCommend zhCommend) {
                         shortcommend = zhCommend.getComments();
+                        StringBuffer stringBuffer = new StringBuffer();
+                        stringBuffer.append(shortcommend.size());
+                        stringBuffer.append("条短评");
+                        tvShort.setText(stringBuffer.toString());
+                        LogUtils.d(shortcommend.size() + "");
+                        commendShortAdapter.setData(shortcommend);
+                        commendShortAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -128,12 +153,12 @@ public class NewsCommentActivity extends BaseActivity {
 
                     }
                 });
-    }
+        ivDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rv_short.setVisibility(rv_short.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+            }
+        });
     }
 }
