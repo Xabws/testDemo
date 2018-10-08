@@ -1,11 +1,11 @@
 package com.example.a1234.miracle.activity;
 
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,11 +49,16 @@ public class NewsCommentActivity extends BaseActivity {
     ConstraintLayout bg;
     @BindView(R.id.iv_down)
     ImageView ivDown;
+    @BindView(R.id.scroll_view)
+    ScrollView scrollView;
+    @BindView(R.id.tv_comment_all)
+    TextView tvCommentAll;
     private String newsId;
     private ArrayList<ZHCommendData> longcommend;
     private ArrayList<ZHCommendData> shortcommend;
     private CommendAdapter commendLongAdapter;
     private CommendAdapter commendShortAdapter;
+    private int totalComment = 0;
 
     @Override
     public int getContentViewId() {
@@ -101,6 +106,8 @@ public class NewsCommentActivity extends BaseActivity {
                         tvLong.setText(stringBuffer.toString());
                         commendLongAdapter.setData(longcommend);
                         commendLongAdapter.notifyDataSetChanged();
+                        totalComment+=longcommend.size();
+                        tvCommentAll.setText(totalComment+"条点评");
                     }
 
                     @Override
@@ -141,6 +148,8 @@ public class NewsCommentActivity extends BaseActivity {
                         LogUtils.d(shortcommend.size() + "");
                         commendShortAdapter.setData(shortcommend);
                         commendShortAdapter.notifyDataSetChanged();
+                        totalComment+=shortcommend.size();
+                        tvCommentAll.setText(totalComment+"条点评");
                     }
 
                     @Override
@@ -158,6 +167,12 @@ public class NewsCommentActivity extends BaseActivity {
             public void onClick(View v) {
                 rv_short.setVisibility(rv_short.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
 
+            }
+        });
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

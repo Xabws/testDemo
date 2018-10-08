@@ -16,8 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.customview.MyViewPager;
 import com.example.a1234.miracle.customview.PagerItemView;
+import com.example.a1234.miracle.customview.glideshape.GlideCircleTransform;
+import com.example.a1234.miracle.customview.glideshape.GlideRoundTransform;
 import com.example.a1234.miracle.data.ZHCommendData;
 import com.example.a1234.miracle.data.ZHStory;
+import com.example.a1234.miracle.utils.DateFormatUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +55,10 @@ public class CommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         });
         bannerViewHolder.tvAuthor.setText(list.get(position).getAuthor());
-        Glide.with(context).load(list.get(position ).getAvatar()).into(bannerViewHolder.ivAvatar);
+        Glide.with(context).load(list.get(position ).getAvatar()).bitmapTransform(new GlideCircleTransform(context)).into(bannerViewHolder.ivAvatar);
         bannerViewHolder.tvComment.setText(list.get(position).getContent());
-        bannerViewHolder.tvCommentTime.setText(list.get(position).getTime()+"");
+        bannerViewHolder.tvCommentTime.setText(DateFormatUtil.transForDate1(Integer.parseInt(list.get(position).getTime())));
+        bannerViewHolder.tvLike.setText(list.get(position).getLikes()+"");
     }
 
     @Override
@@ -71,19 +75,6 @@ public class CommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
         RecyclerView.ViewHolder viewHolder = null;
-       /* switch (viewType) {
-            case 0:
-                view = LayoutInflater.from(context).inflate(R.layout.pager_layout
-                        , parent, false);
-                viewHolder = new PagerHolder(view);
-                break;
-            case 1:
-                view = LayoutInflater.from(context).inflate(R.layout.latest_list_layout
-                        , parent, false);
-                viewHolder = new DrawerHolder(view);
-                break;
-
-        }*/
         view = LayoutInflater.from(context).inflate(R.layout.comment_list_layout
                 , parent, false);
         viewHolder = new DrawerHolder(view);
@@ -94,19 +85,6 @@ public class CommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.list = list;
     }
 
-    /*
-        static class PagerHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.cl_pager)
-            ConstraintLayout cl_pager;
-            @BindView(R.id.iv_page)
-            ImageView iv_page;
-            @BindView(R.id.tv_pager)
-            TextView tv_pager;
-            public PagerHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
-            }
-        }*/
 
     static class DrawerHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_avatar)
