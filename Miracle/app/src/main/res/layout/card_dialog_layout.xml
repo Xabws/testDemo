@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout
-        android:id="@+id/rl_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg"
+    android:background="#fff"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
         <android.support.v7.widget.CardView
             android:id="@+id/card_view"
             cardCornerRadius="12dp"
             cardElevation="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_width="300dp"
+            android:layout_height="150dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:alpha="0"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -29,15 +31,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
-                    android:text="Title!"
-                    android:textSize="19sp"
+                    android:layout_marginTop="30dp"
+                    android:text="是否保存图片!"
+                    android:textSize="18sp"
                     android:textColor="#000"/>
                 <TextView
                     android:id="@+id/tv_message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Message!"
+                    android:text=""
                     android:textSize="22sp"
                     android:textColor="#000"/>
                 <TextView
@@ -46,10 +49,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="60dp"
                     android:layout_marginBottom="20dp"
-                    android:text="OK!"
-                    android:textSize="22sp"
+                    android:text="确认"
+                    android:textSize="12sp"
                     android:textColor="#000"/>
                 <TextView
                     android:id="@+id/tv_cancel"
@@ -57,12 +60,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginRight="60dp"
                     android:layout_marginBottom="20dp"
-                    android:text="CANCEL!"
-                    android:textSize="22sp"
+                    android:text="取消"
+                    android:textSize="12sp"
                     android:textColor="#000"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
-    </RelativeLayout>
-</layout>
+</android.support.constraint.ConstraintLayout>

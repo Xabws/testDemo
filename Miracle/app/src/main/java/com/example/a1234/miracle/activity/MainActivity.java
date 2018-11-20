@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return R.layout.activity_main;
     }
 
-
     @Override
     protected void initView(Bundle savedInstanceState) {
         layoutReadingContent.setOnRefreshListener(this);
@@ -333,10 +332,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, Demo1Activity.class));
                 break;
             case R.id.nav_message:
-                startActivity(new Intent(MainActivity.this, Demo2Activity.class));
                 break;
             case R.id.nav_manage:
-                startActivity(new Intent(MainActivity.this, NewsActivity.class));
                 break;
             case R.id.nav_theme:
                 break;

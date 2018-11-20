@@ -2,10 +2,6 @@ package com.example.a1234.miracle.component;
 
 import com.example.a1234.miracle.MyApplication;
 import com.example.a1234.miracle.activity.BaseActivity;
-import com.example.a1234.miracle.activity.Demo1Activity;
-import com.example.a1234.miracle.activity.Demo2Activity;
-import com.example.a1234.miracle.activity.NewsActivity;
-import com.example.a1234.miracle.activity.NewsDetailActivity;
 import com.example.a1234.miracle.module.AppModule;
 import com.example.a1234.miracle.module.NetModule;
 import com.example.a1234.miracle.module.UserModule;
