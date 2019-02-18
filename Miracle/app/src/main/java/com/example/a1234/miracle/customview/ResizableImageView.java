@@ -2,13 +2,14 @@ package com.example.a1234.miracle.customview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
  * 高度自适应imageview
  */
-public class ResizableImageView extends ImageView {
+public class ResizableImageView extends AppCompatImageView {
 
     public ResizableImageView(Context context) {
         super(context);

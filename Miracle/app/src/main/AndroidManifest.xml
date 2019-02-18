@@ -5,11 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--开发nfc的权限-->
-    1.
-    <uses-permission android:name="android.permission.NFC" />
-    <!--声明只有带有nfc功能的手机才能下载你在google市场发布的具有NFC功能的app-->
-    2.
+
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
@@ -32,6 +28,7 @@
         <activity android:name=".activity.NewsDetailActivity"></activity>
         <activity android:name=".activity.NewsCommentActivity"></activity>
         <activity android:name=".activity.BigImageAcitivity"></activity>
+        <activity android:name=".activity.Fake3DActivity"></activity>
     </application>
 
 </manifest>

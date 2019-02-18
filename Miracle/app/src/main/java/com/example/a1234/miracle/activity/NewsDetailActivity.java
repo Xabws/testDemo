@@ -138,7 +138,6 @@ public class NewsDetailActivity extends BaseActivity {
                         String htmlData = HtmlUtil.createHtmlData(zhContent.getBody(), zhContent.getCss(), zhContent.getJs());
                         addWebView(htmlData);
 
-
                     }
 
                     @Override

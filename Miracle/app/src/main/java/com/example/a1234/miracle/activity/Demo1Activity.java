@@ -1,13 +1,16 @@
 package com.example.a1234.miracle.activity;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,17 +30,31 @@ import retrofit2.Retrofit;
  */
 
 public class Demo1Activity extends Activity {
-    private DrawerView bottomDrawerView;
-    private TextView tv_content;
-    RelativeLayout bg;
-    TextView draw_handle;
+    /*  private DrawerView bottomDrawerView;
+      private TextView tv_content;
+      RelativeLayout bg;
+      TextView draw_handle;*/
+    ImageView iv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_demo1);
-        bottomDrawerView =  findViewById(R.id.vertical_drawer);
-        draw_handle = findViewById(R.id.draw_handle);
+
+        iv = findViewById(R.id.iv);
+        AnimationDrawable anim = new AnimationDrawable();
+
+        for (int i = 0; i <=200; i++) {
+            int id = getResources().getIdentifier("circle_" + i, "drawable", "com.example.a1234.miracle");
+            Drawable drawable = null;
+             drawable = getResources().getDrawable(id);
+            anim.addFrame(drawable, 1);
+        }
+        anim.setOneShot(false);
+        iv.setImageDrawable(anim);
+        anim.start();
+        //anim.start();Glide.with(this).load(R.mipmap.).into(iv);
+      /*  draw_handle = findViewById(R.id.draw_handle);
         tv_content = findViewById(R.id.tv_content);
         bg = findViewById(R.id.bg);
         Glide.with(this).load(R.drawable.bg).asBitmap().into(new SimpleTarget<Bitmap>() {
@@ -59,7 +76,7 @@ public class Demo1Activity extends Activity {
             public void onClick(View v) {
                 Log.d("sssss","content");
             }
-        });
+        });*/
     }
 
 }

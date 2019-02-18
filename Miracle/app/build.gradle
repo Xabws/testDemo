@@ -56,4 +56,8 @@ dependencies {
     implementation 'com.google.dagger:dagger:2.15'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
     implementation 'org.glassfish:javax.annotation:10.0-b28'
+    //Lottie
+    implementation 'com.airbnb.android:lottie:2.3.1'
+    api 'com.facebook.fresco:fresco:1.9.0'
+
 }

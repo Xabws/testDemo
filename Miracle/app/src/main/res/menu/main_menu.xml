@@ -3,10 +3,10 @@
     <group android:checkableBehavior="none">
         <item
             android:id="@+id/nav_notification"
-            android:title="通知" />
+            android:title="AnimationDrawable" />
         <item
             android:id="@+id/nav_message"
-            android:title="私信" />
+            android:title="JsonAnim" />
     </group>
     <group
         android:id="@+id/group_manage"
