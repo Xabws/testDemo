@@ -3,13 +3,18 @@ package com.example.a1234.miracle.adapter;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.Size;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
+import com.example.a1234.miracle.data.MediaFolderBean;
+import com.example.a1234.miracle.utils.DeviceUtil;
 
 import java.util.ArrayList;
 
@@ -22,14 +27,20 @@ import butterknife.OnClick;
  * date: 2019/2/18
  */
 public class AlbumAdapter extends RecyclerView.Adapter {
+    public static final int TYPE_FOLDER = 0;//文件夹目录
+    public static final int TYPE_PHOTO = 1;//图片目录
     private Context context;
-    private ArrayList arrayList;
+    private ArrayList<MediaFolderBean> ablumList;
+    private ArrayList<String> currentList;
     private OnItemClickListener onItemClickListener;
+    private int currentPosition = 0;
+    private int currentType = TYPE_FOLDER;
 
-    public AlbumAdapter(Context context, ArrayList arrayList, OnItemClickListener onItemClickListener) {
+    public AlbumAdapter(Context context, ArrayList ablumList, OnItemClickListener onItemClickListener) {
         this.context = context;
-        this.arrayList = arrayList;
+        this.ablumList = ablumList;
         this.onItemClickListener = onItemClickListener;
+        currentList = new ArrayList<>();
     }
 
     @Override
@@ -38,23 +49,70 @@ public class AlbumAdapter extends RecyclerView.Adapter {
         RecyclerView.ViewHolder viewHolder = null;
         view = LayoutInflater.from(context).inflate(R.layout.album_layout
                 , parent, false);
-        viewHolder = new CommendAdapter.DrawerHolder(view);
+        viewHolder = new AlbumAdapter.DrawerHolder(view);
         return viewHolder;
     }
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void setType(int Type) {
+        currentList.clear();
+        currentType = Type;
+        switch (Type) {
+            case TYPE_FOLDER:
+                for (int i = 0; i < ablumList.size(); i++) {
+                    currentList.add(ablumList.get(i).getFolderContent().get(0).getPath());
+                }
+                notifyDataSetChanged();
+                break;
+            case TYPE_PHOTO:
+                for (int i = 0; i < ablumList.get(currentPosition).getFolderContent().size(); i++) {
+                    currentList.add(ablumList.get(currentPosition).getFolderContent().get(i).getPath());
+                }
+                break;
+        }
+        notifyDataSetChanged();
+    }
 
+    public int getCurrentType() {
+        return currentType;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        final DrawerHolder bannerViewHolder = (DrawerHolder) holder;
+        Size s = DeviceUtil.getScreeWH(context);
+        bannerViewHolder.textView.setVisibility(currentType == TYPE_FOLDER ? View.VISIBLE : View.GONE);
+        /*ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) bannerViewHolder.image.getLayoutParams();
+        lp.width = s.getWidth() / 3;
+        lp.height = s.getWidth() / 3;*/
+
+        bannerViewHolder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentType == TYPE_FOLDER) {
+                    currentPosition = position;
+                    setType(TYPE_PHOTO);
+                } else {
+                    onItemClickListener.onItemClick(position,currentList.get(position));
+                }
+
+            }
+        });
+        if (bannerViewHolder.textView.getVisibility() == View.VISIBLE)
+            bannerViewHolder.textView.setText(ablumList.get(position).getFloderName());
+
+        Glide.with(context).load(currentList.get(position)).override(s.getWidth() / 3, s.getWidth() / 3).into(bannerViewHolder.image);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return currentList != null ? currentList.size() : 0;
     }
 
     static class DrawerHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.image)
         ImageView image;
+        @BindView(R.id.folder_name)
+        TextView textView;
 
         public DrawerHolder(View view) {
             super(view);
@@ -67,8 +125,13 @@ public class AlbumAdapter extends RecyclerView.Adapter {
 
     }
 
+    public void setList(ArrayList<MediaFolderBean> ablumList) {
+        this.ablumList = ablumList;
+        notifyDataSetChanged();
+    }
+
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position,String url);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
