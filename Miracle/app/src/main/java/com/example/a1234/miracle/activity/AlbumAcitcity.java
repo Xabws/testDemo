@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.AlbumAdapter;
+import com.example.a1234.miracle.adapter.MyAdapter;
 import com.example.a1234.miracle.customview.FullyLinearLayoutManager2;
 import com.example.a1234.miracle.customview.ScaleView;
 import com.example.a1234.miracle.customview.SpacesItemDecoration;
@@ -107,9 +108,10 @@ public class AlbumAcitcity extends BaseActivity {
     }
 
     private void showBigPics(int position) {
+        rvPager.setVisibility(View.VISIBLE);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvPager.setLayoutManager(linearLayoutManager);
-        rvPager.setAdapter(new CardAdapter());
+        rvPager.setAdapter(new MyAdapter(adapter.getCurrentList(),this));
         // mRecyclerView绑定scale效果
        CardScaleHelper mCardScaleHelper = new CardScaleHelper();
         mCardScaleHelper.setCurrentItemPos(2);

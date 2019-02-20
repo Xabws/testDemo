@@ -1,39 +1,44 @@
 package com.example.a1234.miracle.adapter;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.customview.viewpager.CardAdapterHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * Created by jameson on 8/30/16.
+ * author: wsBai
+ * date: 2019/2/20
  */
-class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
-    private List<Integer> mList = new ArrayList<>();
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+    private List<String> mList = new ArrayList<>();
+    private Activity activity;
     private CardAdapterHelper mCardAdapterHelper = new CardAdapterHelper();
 
-    public CardAdapter(List<Integer> mList) {
+    public MyAdapter(List<String> mList,Activity activity) {
         this.mList = mList;
+        this.activity = activity;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_card_item, parent, false);
         mCardAdapterHelper.onCreateViewHolder(parent, itemView);
-        return new ViewHolder(itemView);
+        return new MyAdapter.ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyAdapter.ViewHolder holder, final int position) {
         mCardAdapterHelper.onBindViewHolder(holder.itemView, position, getItemCount());
-        holder.mImageView.setImageResource(mList.get(position));
+        Glide.with(activity).load(mList.get(position)).into(holder.mImageView);
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

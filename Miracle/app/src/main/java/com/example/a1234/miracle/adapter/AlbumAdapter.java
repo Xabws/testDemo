@@ -76,6 +76,14 @@ public class AlbumAdapter extends RecyclerView.Adapter {
         return currentType;
     }
 
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public ArrayList<String> getCurrentList() {
+        return currentList;
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final DrawerHolder bannerViewHolder = (DrawerHolder) holder;
