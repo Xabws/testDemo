@@ -114,8 +114,7 @@ public class AlbumAcitcity extends BaseActivity {
         rvPager.setAdapter(new MyAdapter(adapter.getCurrentList(),this));
         // mRecyclerView绑定scale效果
        CardScaleHelper mCardScaleHelper = new CardScaleHelper();
-        mCardScaleHelper.setCurrentItemPos(2);
-        mCardScaleHelper.attachToRecyclerView(rvPager);
+        mCardScaleHelper.setCurrentItemPos(2);mCardScaleHelper.attachToRecyclerView(rvPager);
 
     }
 
