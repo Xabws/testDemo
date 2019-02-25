@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
@@ -18,7 +17,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a1234.miracle.API;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.customview.ResizableImageView;
 import com.example.a1234.miracle.data.ZHContent;
@@ -31,18 +29,13 @@ import com.squareup.picasso.Target;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.Observable;
-
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by a1234 on 2018/9/10.

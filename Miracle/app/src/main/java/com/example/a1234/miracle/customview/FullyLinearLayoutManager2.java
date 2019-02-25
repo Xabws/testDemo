@@ -2,9 +2,10 @@ package com.example.a1234.miracle.customview;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 
@@ -75,7 +76,7 @@ public class FullyLinearLayoutManager2 extends LinearLayoutManager {
             super.onMeasure(recycler, state, widthSpec, heightSpec);
             return;
         }
-        final boolean vertical = getOrientation() == VERTICAL;
+        final boolean vertical = getOrientation() == RecyclerView.VERTICAL;
         initChildDimensions(widthSize, heightSize, vertical);
         int width = 0;
         int height = 0;

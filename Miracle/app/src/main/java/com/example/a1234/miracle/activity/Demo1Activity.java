@@ -7,7 +7,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +22,7 @@ import com.example.a1234.miracle.utils.ContentUtil;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
 import retrofit2.Retrofit;
 
 /**

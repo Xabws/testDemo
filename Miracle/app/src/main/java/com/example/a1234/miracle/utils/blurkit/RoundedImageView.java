@@ -13,7 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-public class RoundedImageView extends ImageView {
+import androidx.appcompat.widget.AppCompatImageView;
+
+public class RoundedImageView extends AppCompatImageView {
 
     private float mCornerRadius = 0;
 
@@ -28,17 +30,12 @@ public class RoundedImageView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         Drawable myDrawable = getDrawable();
-        if (myDrawable!=null && myDrawable instanceof BitmapDrawable && mCornerRadius > 0) {
+        if (myDrawable != null && myDrawable instanceof BitmapDrawable && mCornerRadius > 0) {
             Paint paint = ((BitmapDrawable) myDrawable).getPaint();
             final int color = 0xff000000;
             Rect bitmapBounds = myDrawable.getBounds();
             final RectF rectF = new RectF(bitmapBounds);
-            int saveCount = canvas.saveLayer(rectF, null,
-                    Canvas.MATRIX_SAVE_FLAG |
-                            Canvas.CLIP_SAVE_FLAG |
-                            Canvas.HAS_ALPHA_LAYER_SAVE_FLAG |
-                            Canvas.FULL_COLOR_LAYER_SAVE_FLAG |
-                            Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+            int saveCount = canvas.saveLayer(rectF, null);
             getImageMatrix().mapRect(rectF);
 
             paint.setAntiAlias(true);

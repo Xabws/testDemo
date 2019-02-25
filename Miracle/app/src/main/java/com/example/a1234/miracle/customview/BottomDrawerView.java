@@ -1,18 +1,16 @@
 package com.example.a1234.miracle.customview;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.ViewDragHelper;
-import android.text.Layout;
+
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.example.a1234.miracle.utils.ContentUtil;
+
+import androidx.annotation.Nullable;
+import androidx.customview.widget.ViewDragHelper;
 
 
 /**

@@ -1,7 +1,6 @@
 package com.example.a1234.miracle.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.a1234.miracle.MyApplication;
 import com.example.a1234.miracle.eventbus.MessageEvent;
@@ -12,6 +11,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import retrofit2.Retrofit;

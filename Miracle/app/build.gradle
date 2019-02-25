@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.a1234.miracle"
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -22,10 +22,10 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     api 'com.jakewharton:butterknife:8.4.0'
     //（这个是添加库）
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation rootProject.ext.supportDependencies.supportAppcompatV7
     implementation rootProject.ext.supportDependencies.supportAppcompatV4
     implementation rootProject.ext.supportDependencies.supportDesign
@@ -41,7 +41,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     // compile rootProject.ext.supportDependencies.butterKnife
     /**Dalvik 可执行文件分包支持库(65536问题)**/
-    implementation 'com.android.support:multidex:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.0'
     //Gson converter
     implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
     //RxJava2 Adapter
@@ -60,6 +60,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.3.1'
     api 'com.facebook.fresco:fresco:1.9.0'
     //api 'com.android.support:palette-v7:27.1.1'
+    //google推出的基于recycleview的viewpager
+    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
 
     implementation('com.github.hotchemi:permissionsdispatcher:3.1.0') { exclude module: 'support-v13' }
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'

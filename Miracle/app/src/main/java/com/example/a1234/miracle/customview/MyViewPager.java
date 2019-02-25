@@ -1,10 +1,11 @@
 package com.example.a1234.miracle.customview;
 
 import android.content.Context;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+
+import androidx.viewpager.widget.ViewPager;
 
 /**
  * ViewPager不拦截手势操作

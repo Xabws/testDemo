@@ -1,18 +1,10 @@
 package com.example.a1234.miracle.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
 import android.os.Parcelable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +18,9 @@ import com.example.a1234.miracle.data.ZHStory;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_main"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/image"
@@ -15,18 +15,5 @@
         app:layout_constraintRight_toRightOf="parent"
         android:background="@color/cardview_dark_background"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/folder_name"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        app:layout_constraintLeft_toLeftOf="@+id/image"
-        app:layout_constraintRight_toRightOf="@+id/image"
-        android:text="album"
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:gravity="center"
-        android:background="@color/cardview_shadow_start_color"
-        app:layout_constraintBottom_toBottomOf="@+id/image"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

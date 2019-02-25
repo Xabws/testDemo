@@ -1,11 +1,7 @@
 package com.example.a1234.miracle.adapter;
 
 import android.content.Context;
-import android.os.Parcelable;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,17 +10,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.customview.MyViewPager;
-import com.example.a1234.miracle.customview.PagerItemView;
 import com.example.a1234.miracle.customview.glideshape.GlideCircleTransform;
-import com.example.a1234.miracle.customview.glideshape.GlideRoundTransform;
 import com.example.a1234.miracle.data.ZHCommendData;
-import com.example.a1234.miracle.data.ZHStory;
 import com.example.a1234.miracle.utils.DateFormatUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
