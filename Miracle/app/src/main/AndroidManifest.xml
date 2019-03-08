@@ -30,6 +30,7 @@
         <activity android:name=".activity.BigImageAcitivity"></activity>
         <activity android:name=".activity.Fake3DActivity"></activity>
         <activity android:name=".activity.AlbumAcitcity"></activity>
+        <activity android:name=".activity.ThreadTestActivity"></activity>
     </application>
 
 </manifest>

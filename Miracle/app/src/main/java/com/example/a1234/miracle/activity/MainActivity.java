@@ -352,6 +352,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 break;
             case R.id.nav_theme:
+                startActivity(new Intent(MainActivity.this,ThreadTestActivity.class));
                 break;
             case R.id.nav_setting:
                 break;

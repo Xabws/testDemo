@@ -18,6 +18,7 @@ import com.example.a1234.miracle.utils.LogUtils;
 
 import java.util.ArrayList;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -47,7 +48,7 @@ public class NewsCommentActivity extends BaseActivity {
     @BindView(R.id.bg)
     ConstraintLayout bg;
     @BindView(R.id.iv_down)
-    ImageView ivDown;
+    AppCompatImageView ivDown;
     @BindView(R.id.scroll_view)
     ScrollView scrollView;
     @BindView(R.id.tv_comment_all)
@@ -105,8 +106,8 @@ public class NewsCommentActivity extends BaseActivity {
                         tvLong.setText(stringBuffer.toString());
                         commendLongAdapter.setData(longcommend);
                         commendLongAdapter.notifyDataSetChanged();
-                        totalComment+=longcommend.size();
-                        tvCommentAll.setText(totalComment+"条点评");
+                        totalComment += longcommend.size();
+                        tvCommentAll.setText(totalComment + "条点评");
                     }
 
                     @Override
@@ -147,8 +148,8 @@ public class NewsCommentActivity extends BaseActivity {
                         LogUtils.d(shortcommend.size() + "");
                         commendShortAdapter.setData(shortcommend);
                         commendShortAdapter.notifyDataSetChanged();
-                        totalComment+=shortcommend.size();
-                        tvCommentAll.setText(totalComment+"条点评");
+                        totalComment += shortcommend.size();
+                        tvCommentAll.setText(totalComment + "条点评");
                     }
 
                     @Override
@@ -161,18 +162,7 @@ public class NewsCommentActivity extends BaseActivity {
 
                     }
                 });
-        ivDown.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rv_short.setVisibility(rv_short.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
-
-            }
-        });
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ivDown.setOnClickListener(view -> rv_short.setVisibility(rv_short.getVisibility() == View.GONE ? View.VISIBLE : View.GONE));
+        ivBack.setOnClickListener(view -> finish());
     }
 }
