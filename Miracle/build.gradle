@@ -1,7 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-
     repositories {
         google()
         jcenter()
@@ -11,7 +10,9 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        //dagger2
+        //kotlin第三方注解框架配置
+       // classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.0"
+        //java第三方注解框架配置
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }

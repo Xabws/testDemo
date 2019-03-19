@@ -3,8 +3,10 @@ package com.example.a1234.miracle.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +14,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.a1234.miracle.IMyAidlInterface;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.LatestAdapter;
 import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecyclerView;
@@ -26,6 +33,7 @@ import com.example.a1234.miracle.data.ZHNewsListData;
 import com.example.a1234.miracle.data.ZHStory;
 import com.example.a1234.miracle.eventbus.MessageEvent;
 import com.example.a1234.miracle.retrofit.inter.RetrofitAPI_Interface;
+import com.example.a1234.miracle.service.MiracleProcessService;
 import com.example.a1234.miracle.utils.blurkit.BlurKit;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
@@ -74,6 +82,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private ArrayList<ZHStory> zhStoryArrayList;
     private LatestAdapter latestAdapter;
     private long currentDate;
+    private IMyAidlInterface mStub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +100,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     protected void initView(Bundle savedInstanceState) {
         layoutReadingContent.setOnRefreshListener(this);
         rvNews.setOnPullUpRefreshListener(onPullUpRefresh());
+        //aidl调用
+        ServiceConnection serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                //调用asInterface()方法获得IMyAidlInterface实例
+                mStub = IMyAidlInterface.Stub.asInterface(service);
+                if (mStub != null) {
+                    try {
+                        int x = mStub.add(1, 9);
+                        Log.d("ddd", x + "");
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Log.d("ddd", "empty!");
+                }
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        bindService(new Intent(this, MiracleProcessService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     /**
@@ -352,7 +386,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
                 break;
             case R.id.nav_theme:
-                startActivity(new Intent(MainActivity.this,ThreadTestActivity.class));
+                startActivity(new Intent(MainActivity.this, ThreadTestActivity.class));
                 break;
             case R.id.nav_setting:
                 break;
@@ -429,7 +463,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         })
                 .show();
     }
-
 
 
     @Override
