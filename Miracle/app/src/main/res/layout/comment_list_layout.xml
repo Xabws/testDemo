@@ -34,7 +34,7 @@
 
             <ImageView
                 android:id="@+id/iv_avatar"
-                app:avatarUrl="@{zhcommendData.avatar}"
+                avatarUrl="@{zhcommendData.avatar}"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="15dp"

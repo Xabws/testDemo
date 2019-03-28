@@ -1,26 +1,20 @@
 package com.example.a1234.miracle.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.adapter.IAdapterClickInterface;
 import com.example.a1234.miracle.adapter.NewsCommentAdapter;
 import com.example.a1234.miracle.customview.FullyLinearLayoutManager2;
 import com.example.a1234.miracle.databinding.ActivityCommentBinding;
-import com.example.a1234.miracle.databinding.CommentListLayoutBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
-import com.example.a1234.miracle.utils.LogUtils;
 import com.example.a1234.miracle.utils.ToastUtil;
 import com.example.a1234.miracle.viewmodel.NewsCommentViewModel;
-import com.example.baselib.retrofit.data.ZHCommend;
 import com.example.baselib.retrofit.data.ZHCommendData;
 
 import java.util.ArrayList;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 public class NewsCommentActivity extends BaseActivity {

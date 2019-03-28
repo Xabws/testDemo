@@ -1,28 +1,12 @@
 package com.example.a1234.miracle.activity;
 
 import android.app.Activity;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.example.a1234.miracle.customview.DrawerView;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.utils.ContentUtil;
-
-
 import androidx.annotation.Nullable;
-import retrofit2.Retrofit;
 
 /**
  * Created by a1234 on 2018/8/16.

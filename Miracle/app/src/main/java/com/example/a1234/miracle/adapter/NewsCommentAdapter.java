@@ -2,15 +2,14 @@ package com.example.a1234.miracle.adapter;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.CommentListLayoutBinding;
 import com.example.baselib.retrofit.data.ZHCommendData;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -50,8 +49,17 @@ public class NewsCommentAdapter extends CommonAdapter<CommentListLayoutBinding, 
      */
     @BindingAdapter({"avatarUrl"})
     public static void loadimage(ImageView imageView, String url) {
-        Log.e("TAG", url + "   -走到这里了 "+imageView.getId());
-        Glide.with(imageView.getContext()).load(url).centerCrop().placeholder(R.mipmap.ic_launcher).into(imageView);
+        /**
+         * Android P http网络请求的问题
+         * Google表示，为保证用户数据和设备的安全，针对下一代 Android 系统(Android P) 的应用程序，将要求默认使用加密连接，这意味着 Android P 将禁止 App 使用所有未加密的连接，
+         * 因此运行 Android P 系统的安卓设备无论是接收或者发送流量，未来都不能明码传输，需要使用下一代(Transport Layer Security)传输层安全协议，而 Android Nougat 和 Oreo 则不受影响。
+         */
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("https:");
+        stringBuffer.append( url.substring(5));
+        String newurl = stringBuffer.toString();
+        Log.e("TAG", url + "   -添加https "+newurl);
+        Glide.with(imageView.getContext()).load(newurl).centerCrop().apply(RequestOptions.bitmapTransform(new CircleCrop())).placeholder(R.mipmap.ic_launcher).into(imageView);
     }
 
 }
