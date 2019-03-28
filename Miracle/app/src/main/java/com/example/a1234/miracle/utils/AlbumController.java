@@ -5,10 +5,9 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.example.a1234.miracle.MyApplication;
-import com.example.a1234.miracle.data.MediaBean;
 
-import org.greenrobot.eventbus.EventBus;
+import com.example.a1234.miracle.MyApplication;
+import com.example.baselib.retrofit.data.MediaBean;
 
 import java.io.File;
 import java.util.ArrayList;

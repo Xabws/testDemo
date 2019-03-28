@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
 import com.example.a1234.miracle.MyApplication;
 

@@ -8,10 +8,10 @@ import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.AlbumAdapter;
 import com.example.a1234.miracle.adapter.AlbumPagerAdapter;
 import com.example.a1234.miracle.customview.SpacesItemDecoration;
-import com.example.a1234.miracle.data.MediaBean;
-import com.example.a1234.miracle.data.MediaFolderBean;
 import com.example.a1234.miracle.eventbus.MessageEvent;
 import com.example.a1234.miracle.utils.AlbumController;
+import com.example.baselib.retrofit.data.MediaBean;
+import com.example.baselib.retrofit.data.MediaFolderBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;

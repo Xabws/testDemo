@@ -1,6 +1,5 @@
 package com.example.a1234.miracle.utils;
 
-import android.app.Application;
 import android.widget.Toast;
 
 import com.example.a1234.miracle.MyApplication;

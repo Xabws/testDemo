@@ -1,129 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bg"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="NewsCommentViewModel"
+            type="com.example.a1234.miracle.viewmodel.NewsDetailViewModel" />
+
+        <variable
+            name="recyclerAdapter_long"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+
+        <variable
+            name="recyclerAdapter_short"
+            type="androidx.recyclerview.widget.RecyclerView.Adapter" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_title"
+        android:id="@+id/bg"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/main_color">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:padding="20dp"
-            android:src="@drawable/back"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_comment_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="0条点评"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/iv_back"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/edit"
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:padding="18dp"
-            android:src="@drawable/edit"
-            app:layout_constraintRight_toRightOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.example.a1234.miracle.customview.MyScrollview
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_title">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:id="@+id/cl_title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/main_color">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_long"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent">
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:src="@drawable/back"
+                app:layout_constraintLeft_toLeftOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_long"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="0条长评"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <RelativeLayout
-                android:id="@+id/cl_long_cover"
+            <TextView
+                android:id="@+id/tv_comment_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                app:layout_constraintTop_toBottomOf="@+id/cl_long">
+                android:layout_marginLeft="20dp"
+                android:text="0条点评"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_long"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_short"
-                android:layout_width="0dp"
-                android:layout_height="35dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_long_cover">
-
-                <TextView
-                    android:id="@+id/tv_short"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="0条短评"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/iv_down"
-                    android:layout_width="44dp"
-                    android:layout_height="35dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:src="@drawable/down"
-                    app:layout_constraintRight_toRightOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <RelativeLayout
-                android:id="@+id/cl_short_cover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                app:layout_constraintTop_toBottomOf="@+id/cl_short">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_short"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:padding="18dp"
+                android:src="@drawable/edit"
+                app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.example.a1234.miracle.customview.MyScrollview>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.example.a1234.miracle.customview.MyScrollview
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_title">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_long"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_long"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="0条长评"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cl_long_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_long">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_long"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adapter="@{recyclerAdapter_long}"
+                        />
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_short"
+                    android:layout_width="0dp"
+                    android:layout_height="35dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_long_cover">
+
+                    <TextView
+                        android:id="@+id/tv_short"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="0条短评"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_down"
+                        android:layout_width="44dp"
+                        android:layout_height="35dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:src="@drawable/down"
+                        app:layout_constraintRight_toRightOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cl_short_cover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:descendantFocusability="blocksDescendants"
+                    app:layout_constraintTop_toBottomOf="@+id/cl_short">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_short"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:adapter="@{recyclerAdapter_short}"
+                       />
+                </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.example.a1234.miracle.customview.MyScrollview>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.a1234.miracle.R;
+import com.example.baselib.retrofit.data.Test1;
+import com.example.baselib.retrofit.data.Test2;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,11 @@ public class ThreadTestActivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Test2 test2 = new Test2();
+        test2.test();
+        Test1 test1 = new Test1();
+        test1.xxx();
+        test2.xxx();
         String a = "123";
         String b = "123";
         boolean xb = a==b;

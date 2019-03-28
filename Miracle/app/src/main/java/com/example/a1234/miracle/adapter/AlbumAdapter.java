@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.data.MediaFolderBean;
 import com.example.a1234.miracle.utils.DeviceUtil;
+import com.example.baselib.retrofit.data.MediaFolderBean;
 
 import java.util.ArrayList;
 

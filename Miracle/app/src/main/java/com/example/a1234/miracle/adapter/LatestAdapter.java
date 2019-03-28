@@ -13,7 +13,7 @@ import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.customview.MyViewPager;
 import com.example.a1234.miracle.customview.PagerItemView;
 import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecycleAdapter;
-import com.example.a1234.miracle.data.ZHStory;
+import com.example.baselib.retrofit.data.ZHStory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +109,7 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
 
     public void setData(ArrayList<ZHStory> list) {
         this.list = list;
+        notifyDataSetChanged();
     }
 
     /*

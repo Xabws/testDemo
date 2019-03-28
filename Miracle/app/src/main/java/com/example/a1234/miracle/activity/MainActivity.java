@@ -29,12 +29,16 @@ import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.LatestAdapter;
 import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecyclerView;
 import com.example.a1234.miracle.customview.loadmorerecycleview.OnPullUpRefreshListener;
-import com.example.a1234.miracle.data.ZHNewsListData;
-import com.example.a1234.miracle.data.ZHStory;
+import com.example.a1234.miracle.databinding.ActivityMainBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
-import com.example.a1234.miracle.retrofit.inter.RetrofitAPI_Interface;
 import com.example.a1234.miracle.service.MiracleProcessService;
 import com.example.a1234.miracle.utils.blurkit.BlurKit;
+import com.example.a1234.miracle.viewmodel.ZHNewsViewModel;
+import com.example.baselib.arch.viewmodel.BaseViewModel;
+import com.example.baselib.retrofit.API;
+import com.example.baselib.retrofit.data.WeatherBean;
+import com.example.baselib.retrofit.data.ZHNewsListData;
+import com.example.baselib.retrofit.data.ZHStory;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -42,7 +46,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import butterknife.BindView;
@@ -64,31 +70,19 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private static final int STATE_REFRESHING = 1;
     private static final int STATE_REFRESH_FINISH = 2;
     public static final int RESQUST_CODE = 5;
+    ActivityMainBinding activityMainBinding;
     private int mRefreshState = STATE_REFRESH_FINISH;
-    @BindView(R.id.drawer)
-    DrawerLayout drawer;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
-    @BindView(R.id.layout_reading_content)
-    com.example.a1234.miracle.customview.SwipeRefreshPagerLayout layoutReadingContent;
-    @BindView(R.id.layout_content)
-    FrameLayout layoutContent;
     // 抽屉菜单对象
     private DrawerToggle mDrawerToggle; //侧滑菜单状态监听器
-    @BindView(R.id.rv_news)
-    LoadMoreRecyclerView rvNews;
     private ArrayList<ZHStory> zhStoryArrayList;
-    private LatestAdapter latestAdapter;
-    private long currentDate;
     private IMyAidlInterface mStub;
+    private LatestAdapter latestAdapter;
+    private ZHNewsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BlurKit.init(this);
-        init();
     }
 
     @Override
@@ -98,8 +92,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        layoutReadingContent.setOnRefreshListener(this);
-        rvNews.setOnPullUpRefreshListener(onPullUpRefresh());
+        activityMainBinding = DataBindingUtil.setContentView(this, getContentViewId());
+        latestAdapter = new LatestAdapter(this, new LatestAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                EventBus.getDefault().postSticky(new MessageEvent(viewModel.getNewsList().get(position).getId()));
+                Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
+                startActivity(intent);
+            }
+        });
+        activityMainBinding.setRecyclerAdapter(latestAdapter);
+        viewModel = ViewModelProviders.of(MainActivity.this).get(ZHNewsViewModel.class);
+        // zhNewsViewModel.loadData(API.LATEST);
+        subscribeToModel(viewModel);
+        activityMainBinding.layoutReadingContent.setOnRefreshListener(this);
+        activityMainBinding.rvNews.setOnPullUpRefreshListener(onPullUpRefresh());
         //aidl调用
         ServiceConnection serviceConnection = new ServiceConnection() {
             @Override
@@ -125,82 +132,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         };
         bindService(new Intent(this, MiracleProcessService.class), serviceConnection, BIND_AUTO_CREATE);
+        init();
     }
 
     /**
      * 获取当天的新闻
      */
     private void getNews() {
-        if (latestAdapter == null) {
-            latestAdapter = new LatestAdapter(this, new LatestAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    EventBus.getDefault().postSticky(new MessageEvent(zhStoryArrayList.get(position).getId()));
-                    Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
-                    //intent.putExtra("newsId", zhStoryArrayList.get(position).getId());
-                    startActivity(intent);
-                }
-            });
-            rvNews.setLayoutManager(new LinearLayoutManager(this));
-            rvNews.setAdapter(latestAdapter);
-        }
-        RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
-        Observable<ZHNewsListData> observable = retrofitAPI_interface.getLatest();//获取观察者对象
-        /**
-         * 在RxJava 中，Scheduler ——调度器，相当于线程控制器，RxJava 通过它来指定每一段代码应该运行在什么样的线程。RxJava 已经内置了几个 Scheduler ，它们已经适合大多数的使用场景：
-         Schedulers.immediate(): 直接在当前线程运行，相当于不指定线程。这是默认的 Scheduler。
-         Schedulers.newThread(): 总是启用新线程，并在新线程执行操作。
-         Schedulers.io(): I/O 操作（读写文件、读写数据库、网络信息交互等）所使用的 Scheduler。行为模式和 newThread() 差不多，区别在于 io() 的内部实现是是用一个无数量上限的线程池，可以重用空闲的线程，因此多数情况下 io() 比 newThread() 更有效率。不要把计算工作放在 io() 中，可以避免创建不必要的线程。
-         Schedulers.computation(): 计算所使用的 Scheduler。这个计算指的是 CPU 密集型计算，即不会被 I/O 等操作限制性能的操作，例如图形的计算。这个 Scheduler 使用的固定的线程池，大小为 CPU 核数。不要把 I/O 操作放在 computation() 中，否则 I/O 操作的等待时间会浪费 CPU。
-         另外， Android 还有一个专用的 AndroidSchedulers.mainThread()，它指定的操作将在 Android 主线程运行。
-         */
-        observable.subscribeOn(Schedulers.io())// 指定 subscribe() 发生在 IO 线程
-                .observeOn(AndroidSchedulers.mainThread())//指定 Subscriber 的回调发生在主线程
-                .subscribe(new Observer<ZHNewsListData>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ZHNewsListData zhNewsListData) {
-                        currentDate = Long.parseLong(zhNewsListData.getDate());
-                        zhStoryArrayList = zhNewsListData.getStories();
-                        latestAdapter.setData(zhStoryArrayList);
-                        latestAdapter.notifyDataSetChanged();
-                        if (layoutReadingContent.isRefreshing())
-                            layoutReadingContent.setRefreshing(false);
-                        mRefreshState = STATE_REFRESH_FINISH;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        /*call.enqueue(new Callback<ZHNewsListData>() {
-            @Override
-            public void onResponse(Call<ZHNewsListData> call, Response<ZHNewsListData> response) {
-                currentDate = Long.parseLong(response.body().getDate());
-                zhStoryArrayList = response.body().getStories();
-                latestAdapter.setData(zhStoryArrayList);
-                latestAdapter.notifyDataSetChanged();
-                if (layoutReadingContent.isRefreshing())
-                    layoutReadingContent.setRefreshing(false);
-                mRefreshState = STATE_REFRESH_FINISH;
-            }
-
-            @Override
-            public void onFailure(Call<ZHNewsListData> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
-            }
-
-        });*/
+        viewModel.updateList(ZHNewsViewModel.DATECURRENT);
     }
 
     /**
@@ -208,78 +147,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
      * date:获取此日期之前：20180912：2018年9月11日的新闻
      */
     private void getOldNews(long date) {
-        if (latestAdapter == null) {
-            latestAdapter = new LatestAdapter(this, new LatestAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    EventBus.getDefault().postSticky(new MessageEvent(zhStoryArrayList.get(position).getId()));
-                    Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
-                    //intent.putExtra("newsId", zhStoryArrayList.get(position).getId());
-                    startActivity(intent);
-                }
-            });
-            rvNews.setLayoutManager(new LinearLayoutManager(this));
-            rvNews.setAdapter(latestAdapter);
-        }
-        RetrofitAPI_Interface retrofitAPI_interface = retrofit.create(RetrofitAPI_Interface.class);
-        Observable<ZHNewsListData> observable = retrofitAPI_interface.getOldNews(date);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ZHNewsListData>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ZHNewsListData zhNewsListData) {
-                        if (zhNewsListData != null) {
-                            if (zhStoryArrayList == null) {
-                                zhStoryArrayList = zhNewsListData.getStories();
-                            } else {
-                                zhStoryArrayList.addAll(zhNewsListData.getStories());
-                            }
-                            latestAdapter.setData(zhStoryArrayList);
-                            latestAdapter.notifyDataSetChanged();
-                        }
-                        if (layoutReadingContent.isRefreshing())
-                            layoutReadingContent.setRefreshing(false);
-                        mRefreshState = STATE_REFRESH_FINISH;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-       /* call.enqueue(new Callback<ZHNewsListData>() {
-            @Override
-            public void onResponse(Call<ZHNewsListData> call, Response<ZHNewsListData> response) {
-                if (response != null) {
-                    if (zhStoryArrayList == null) {
-                        zhStoryArrayList = response.body().getStories();
-                    } else {
-                        zhStoryArrayList.addAll(response.body().getStories());
-                    }
-                    latestAdapter.setData(zhStoryArrayList);
-                    latestAdapter.notifyDataSetChanged();
-                }
-                if (layoutReadingContent.isRefreshing())
-                    layoutReadingContent.setRefreshing(false);
-                mRefreshState = STATE_REFRESH_FINISH;
-            }
-
-            @Override
-            public void onFailure(Call<ZHNewsListData> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_SHORT);
-            }
-
-        });*/
+        viewModel.updateList(date);
     }
 
     @Override
@@ -290,13 +158,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private void init() {
         onNavigationHeadClick();
         MainActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
-       /* onViewClicked(animview);
-        onViewClicked(animinter);
-        onViewClicked(tv3);*/
         //设置toolbar标题文本
-        toolbar.setTitle("首页");
+        activityMainBinding.include.toolbar.setTitle("首页");
         //设置toolbar
-        setSupportActionBar(toolbar);
+        setSupportActionBar(activityMainBinding.include.toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             //设置左上角图标是否可点击
@@ -304,7 +169,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             //左上角加上一个返回图标
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        mDrawerToggle = new DrawerToggle(this, drawer, toolbar, R.string.open, R.string.close) {
+        mDrawerToggle = new DrawerToggle(this, activityMainBinding.drawer, activityMainBinding.include.toolbar, R.string.open, R.string.close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -316,14 +181,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         };
         mDrawerToggle.syncState();
-        drawer.addDrawerListener(mDrawerToggle);
-        navigationView.setNavigationItemSelectedListener(this);
+        activityMainBinding.drawer.addDrawerListener(mDrawerToggle);
+        activityMainBinding.navigationView.setNavigationItemSelectedListener(this);
         getNews();
     }
 
     private void onNavigationHeadClick() {
         //   View drawerView = navigationView.inflateHeaderView(R.layout.navigation_head);
-        View drawerView = navigationView.getHeaderView(0);
+        View drawerView = activityMainBinding.navigationView.getHeaderView(0);
         final ImageView image_head = drawerView.findViewById(R.id.image_head);
         image_head.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -379,11 +244,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 break;
             case R.id.nav_message:
                 startActivity(new Intent(MainActivity.this, Fake3DActivity.class));
-
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(MainActivity.this, AlbumAcitcity.class));
-
                 break;
             case R.id.nav_theme:
                 startActivity(new Intent(MainActivity.this, ThreadTestActivity.class));
@@ -395,8 +258,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             case R.id.nav_about:
                 break;
         }
-        toolbar.setTitle(item.getTitle());
-        drawer.closeDrawer(GravityCompat.START);
+        activityMainBinding.include.toolbar.setTitle(item.getTitle());
+        activityMainBinding.drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -413,20 +276,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 if (mRefreshState == STATE_REFRESHING) {
                     return;
                 } else {
-                    if (currentDate != 0) {
-                        currentDate--;
+                    if (viewModel.getCurrentDate() != 0) {
+                        viewModel.setCurrentDate(viewModel.getCurrentDate() - 1);
                     }
-                    getOldNews(currentDate);
+                    getOldNews(viewModel.getCurrentDate());
                 }
                 mRefreshState = STATE_REFRESHING;
-                //mRefreshListener.onRefreshing();
-                /*if (!marketController.Islistend()) {
-                    marketController.startPullUpRefresh();
-                } else {
-                    mRefreshListener.onRefreshFinish();
-                    ToastUtil.toast(getResources().getString(R.string.none_more_data));
-                }
-*/
             }
         };
     }
@@ -477,5 +332,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @OnNeverAskAgain({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
     void onPermissionNeverAskAgain() {
+    }
+
+    /**
+     * 订阅数据变化来刷新UI
+     *
+     * @param model
+     */
+    private void subscribeToModel(final BaseViewModel model) {
+        /**
+         * 创建一个观察者用来更新UI操作
+         */
+        model.getLiveObservableData().observe(this, new androidx.lifecycle.Observer<ZHNewsListData>() {
+            @Override
+            public void onChanged(ZHNewsListData zhNewsListData) {
+                if (zhNewsListData != null) {
+                    model.setUiObservableData(zhNewsListData);
+                    latestAdapter.setData(zhNewsListData.getStories());
+                    if (activityMainBinding.layoutReadingContent.isRefreshing())
+                        activityMainBinding.layoutReadingContent.setRefreshing(false);
+                    mRefreshState = STATE_REFRESH_FINISH;
+                }
+            }
+        });
     }
 }

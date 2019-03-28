@@ -20,7 +20,6 @@ import com.example.a1234.miracle.customview.DrawerView;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.utils.ContentUtil;
 
-import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import retrofit2.Retrofit;
