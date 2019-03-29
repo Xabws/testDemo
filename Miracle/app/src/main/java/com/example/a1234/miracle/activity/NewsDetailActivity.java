@@ -155,7 +155,6 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                         "}" +
                         "})()");
             }
-
         }
 
         private void addImageClickListner() {
@@ -219,7 +218,11 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
                     return;
                 activityNewsDetailBinding.tvTitle.setText(zhCommend.getZhContent().getTitle());
                 activityNewsDetailBinding.tvSource.setText(zhCommend.getZhContent().getImage_source());
-                Picasso.get().load(zhCommend.getZhContent().getImage()).into(new Target() {
+                StringBuffer stringBuffer = new StringBuffer();
+                stringBuffer.append("https");
+                stringBuffer.append(zhCommend.getZhContent().getImage().substring(5));
+                String newurl = stringBuffer.toString();
+                Picasso.get().load(newurl).into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                         if (activityNewsDetailBinding.ivCover.getWidth() != 0 && activityNewsDetailBinding.ivCover.getHeight() != 0) {

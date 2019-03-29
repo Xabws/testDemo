@@ -3,6 +3,7 @@ package com.example.a1234.miracle.viewmodel;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.a1234.miracle.utils.DateFormatUtil;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ZHCommend;
 import com.example.baselib.retrofit.repository.APiRepository;
@@ -47,21 +48,15 @@ public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
          * Transformations.switchMap:
          * 在LiveData将变化的数据通知给观察者前，改变数据的类型；或者是返回一个不一样的LiveData。
          */
-        mLiveObservableData_short = Transformations.switchMap(NetUtils.netConnected(application), new Function<Boolean, LiveData<ZHCommend>>() {
-            @Override
-            public LiveData<ZHCommend> apply(Boolean isNetConnected) {
-                if (!isNetConnected)
-                    return ABSENT;
-                return getComment(newsId, false);
-            }
+        mLiveObservableData_short = Transformations.switchMap(NetUtils.netConnected(application), (Function<Boolean, LiveData<ZHCommend>>) isNetConnected -> {
+            if (!isNetConnected)
+                return ABSENT;
+            return getComment(newsId, false);
         });
-        mLiveObservableData_long = Transformations.switchMap(NetUtils.netConnected(application), new Function<Boolean, LiveData<ZHCommend>>() {
-            @Override
-            public LiveData<ZHCommend> apply(Boolean isNetConnected) {
-                if (!isNetConnected)
-                    return ABSENT;
-                return getComment(newsId, true);
-            }
+        mLiveObservableData_long = Transformations.switchMap(NetUtils.netConnected(application), (Function<Boolean, LiveData<ZHCommend>>) isNetConnected -> {
+            if (!isNetConnected)
+                return ABSENT;
+            return getComment(newsId, true);
         });
     }
 
@@ -99,6 +94,7 @@ public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
                 });
         return applyData;
     }
+
 
     public LiveData<ZHCommend> getmLiveObservableData_short() {
         return mLiveObservableData_short;

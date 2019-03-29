@@ -9,6 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.CommentListLayoutBinding;
+import com.example.a1234.miracle.utils.DateFormatUtil;
 import com.example.baselib.retrofit.data.ZHCommendData;
 
 import java.util.List;
@@ -37,7 +38,14 @@ public class NewsCommentAdapter extends CommonAdapter<CommentListLayoutBinding, 
     @Override
     public void bindView(CommonViewHolder viewHolder, ZHCommendData zhCommendData, int position) {
         // 将数据加载进databinding绑定的xml中
-        viewHolder.bindView.setZhcommendData(dataList.get(position));
+        try {
+            String time = null;
+            time = DateFormatUtil.transForDate2(Integer.parseInt(zhCommendData.getTime()));
+            zhCommendData.setTime(time);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        viewHolder.bindView.setZhcommendData(zhCommendData);
         viewHolder.bindView.rlMain.setOnClickListener(v -> adapterClickInterface.onItemClick(viewHolder.bindView, zhCommendData, position));
     }
 
@@ -56,9 +64,9 @@ public class NewsCommentAdapter extends CommonAdapter<CommentListLayoutBinding, 
          */
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("https:");
-        stringBuffer.append( url.substring(5));
+        stringBuffer.append(url.substring(5));
         String newurl = stringBuffer.toString();
-        Log.e("TAG", url + "   -添加https "+newurl);
+        Log.e("TAG", url + "   -添加https " + newurl);
         Glide.with(imageView.getContext()).load(newurl).centerCrop().apply(RequestOptions.bitmapTransform(new CircleCrop())).placeholder(R.mipmap.ic_launcher).into(imageView);
     }
 
