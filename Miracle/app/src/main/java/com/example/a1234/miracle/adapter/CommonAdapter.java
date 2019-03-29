@@ -31,6 +31,7 @@ public abstract class CommonAdapter<DB extends ViewDataBinding, T> extends Recyc
 
     public void setDataList(List<T> dataList) {
         this.dataList = dataList;
+        notifyDataSetChanged();
     }
 
     public CommonAdapter(Context context, IAdapterClickInterface<DB, T> adapterClickInterface) {

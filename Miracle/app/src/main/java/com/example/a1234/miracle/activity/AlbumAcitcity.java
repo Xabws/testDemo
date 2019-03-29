@@ -1,15 +1,22 @@
 package com.example.a1234.miracle.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.AlbumAdapter;
 import com.example.a1234.miracle.adapter.AlbumPagerAdapter;
+import com.example.a1234.miracle.adapter.IAdapterClickInterface;
 import com.example.a1234.miracle.customview.SpacesItemDecoration;
+import com.example.a1234.miracle.databinding.ActivityAlbumBinding;
+import com.example.a1234.miracle.databinding.AlbumLayoutBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
 import com.example.a1234.miracle.utils.AlbumController;
+import com.example.a1234.miracle.viewmodel.AlbumViewModel;
+import com.example.a1234.miracle.viewmodel.NewsCommentViewModel;
+import com.example.baselib.retrofit.data.ImageBean;
 import com.example.baselib.retrofit.data.MediaBean;
 import com.example.baselib.retrofit.data.MediaFolderBean;
 
@@ -20,6 +27,8 @@ import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -31,20 +40,10 @@ import butterknife.OnClick;
  * date: 2019/2/18
  */
 public class AlbumAcitcity extends BaseActivity {
-    @BindView(R.id.iv_back)
-    ImageView ivBack;
-    @BindView(R.id.cl_top)
-    ConstraintLayout clTop;
-    @BindView(R.id.rv_album)
-    RecyclerView rvAlbum;
-    @BindView(R.id.rv_pager)
-    ViewPager2 rvPager;
+    private ActivityAlbumBinding activityAlbumBinding;
     private AlbumAdapter adapter;
     private AlbumPagerAdapter albumPagerAdapter;
-    //图片封面的list
-    private ArrayList<MediaFolderBean> ablumlist;
-    private HashMap<String, List<MediaBean>> mhashmap = new HashMap<>();
-    private AlbumController albumController;
+    private AlbumViewModel viewModel;
 
     @Override
     public int getContentViewId() {
@@ -58,52 +57,31 @@ public class AlbumAcitcity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        activityAlbumBinding = DataBindingUtil.setContentView(this, getContentViewId());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(AlbumAcitcity.this, 3);
-        rvAlbum.setLayoutManager(gridLayoutManager);
-        rvAlbum.addItemDecoration(new SpacesItemDecoration(AlbumAcitcity.this));
-        adapter = new AlbumAdapter(AlbumAcitcity.this, ablumlist, new AlbumAdapter.OnItemClickListener() {
+        activityAlbumBinding.rvAlbum.setLayoutManager(gridLayoutManager);
+        activityAlbumBinding.rvAlbum.addItemDecoration(new SpacesItemDecoration(AlbumAcitcity.this));
+        adapter = new AlbumAdapter(AlbumAcitcity.this, new IAdapterClickInterface<AlbumLayoutBinding, ImageBean>() {
             @Override
-            public void onItemClick(int position, String url) {
+            public void onItemClick(AlbumLayoutBinding binding, ImageBean imageBean, int position) {
                 showBigPics(position);
-               /* scaleView.setVisibility(View.VISIBLE);
-                Glide.with(AlbumAcitcity.this).load(url).into(scaleView);*/
             }
-        });
-        rvAlbum.setAdapter(adapter);
-        albumController = new AlbumController(new AlbumController.MediaCallback() {
-            @Override
-            public void onAllMedias(HashMap<String, List<MediaBean>> allPhotos) {
-                mhashmap.putAll(allPhotos);
-                //key:文件夹，value：文件夹内容
-                ablumlist = new ArrayList();
-                for (Map.Entry<String, List<MediaBean>> entry : mhashmap.entrySet()) {
-                    String FolerName = entry.getKey().substring(entry.getKey().lastIndexOf("/") + 1);
-                    MediaFolderBean mediaFolderBean = new MediaFolderBean(FolerName, entry.getKey(), entry.getValue());
-                    ablumlist.add(mediaFolderBean);
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.setList(ablumlist);
-                        adapter.setType(AlbumAdapter.TYPE_FOLDER);
-                    }
-                });
+        },AlbumAdapter.TYPE_FOLDER);
 
-
-            }
-        });
-        albumController.getAllMediaInfos();
+        activityAlbumBinding.setRecyclerAdapter(adapter);
+        viewModel = ViewModelProviders.of(AlbumAcitcity.this).get(AlbumViewModel.class);
+        subscribeToModel(viewModel);
     }
 
     private void showBigPics(int position) {
-        rvPager.setVisibility(View.VISIBLE);
-        albumPagerAdapter = new AlbumPagerAdapter(AlbumAcitcity.this, adapter.getCurrentList(), new AlbumPagerAdapter.OnItemClickListener() {
+        activityAlbumBinding.rvPager.setVisibility(View.VISIBLE);
+      /*  albumPagerAdapter = new AlbumPagerAdapter(AlbumAcitcity.this, adapter.getCurrentList(), new AlbumPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, String url) {
 
             }
-        });
-        rvPager.setAdapter(albumPagerAdapter);
+        });*/
+        activityAlbumBinding.setViewpager2Adapter(albumPagerAdapter);
     }
 
 
@@ -122,9 +100,20 @@ public class AlbumAcitcity extends BaseActivity {
         if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
             finish();
         } else {
-            adapter.setType(AlbumAdapter.TYPE_FOLDER);
+           // adapter.setType(AlbumAdapter.TYPE_FOLDER);
         }
     }
 
-
+    /**
+     * 订阅数据变化来刷新UI
+     *
+     * @param model
+     */
+    private void subscribeToModel(final AlbumViewModel model) {
+        model.getLiveObservableData().observe(this, ImageBean -> {
+            Log.d("all_folders",ImageBean.toString());
+            adapter.setDataList(ImageBean);
+           // adapter.setType(AlbumAdapter.TYPE_FOLDER);
+        });
+    }
 }
