@@ -12,6 +12,7 @@ import com.example.a1234.miracle.databinding.CommentListLayoutBinding;
 import com.example.a1234.miracle.utils.DateFormatUtil;
 import com.example.baselib.retrofit.data.ZHCommendData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.databinding.BindingAdapter;
@@ -22,7 +23,7 @@ import androidx.databinding.BindingAdapter;
  */
 public class NewsCommentAdapter extends CommonAdapter<CommentListLayoutBinding, ZHCommendData> {
 
-    public NewsCommentAdapter(Context context, List<ZHCommendData> dataList, IAdapterClickInterface<CommentListLayoutBinding, ZHCommendData> adapterClickInterface) {
+    public NewsCommentAdapter(Context context, ArrayList<ZHCommendData> dataList, IAdapterClickInterface<CommentListLayoutBinding, ZHCommendData> adapterClickInterface) {
         super(context, dataList, adapterClickInterface);
     }
 

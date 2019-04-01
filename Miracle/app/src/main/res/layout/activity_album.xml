@@ -6,9 +6,11 @@
         <variable
             name="albumViewModel"
             type="com.example.a1234.miracle.viewmodel.AlbumViewModel" />
-
         <variable
-            name="recyclerAdapter"
+            name="AdapterFolder"
+            type="com.example.a1234.miracle.adapter.AlbumAdapter" />
+        <variable
+            name="AdapterPhoto"
             type="com.example.a1234.miracle.adapter.AlbumAdapter" />
 
         <variable
@@ -41,7 +43,19 @@
             android:id="@+id/rv_album"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:adapter="@{recyclerAdapter}"
+            android:adapter="@{AdapterFolder}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cl_top"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_album_pic"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:adapter="@{AdapterPhoto}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"

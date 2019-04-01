@@ -3,6 +3,7 @@ package com.example.a1234.miracle.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ImageView;
 
 import com.example.a1234.miracle.R;
@@ -66,22 +67,28 @@ public class AlbumAcitcity extends BaseActivity {
             public void onItemClick(AlbumLayoutBinding binding, ImageBean imageBean, int position) {
                 showBigPics(position);
             }
-        },AlbumAdapter.TYPE_FOLDER);
+        }, AlbumAdapter.TYPE_FOLDER);
 
-        activityAlbumBinding.setRecyclerAdapter(adapter);
+        activityAlbumBinding.setAdapterFolder(adapter);
         viewModel = ViewModelProviders.of(AlbumAcitcity.this).get(AlbumViewModel.class);
         subscribeToModel(viewModel);
-    }
-
-    private void showBigPics(int position) {
-        activityAlbumBinding.rvPager.setVisibility(View.VISIBLE);
-      /*  albumPagerAdapter = new AlbumPagerAdapter(AlbumAcitcity.this, adapter.getCurrentList(), new AlbumPagerAdapter.OnItemClickListener() {
+        albumPagerAdapter = new AlbumPagerAdapter(AlbumAcitcity.this, new AlbumPagerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, String url) {
 
             }
-        });*/
+        });
         activityAlbumBinding.setViewpager2Adapter(albumPagerAdapter);
+    }
+
+    private void showBigPics(int position) {
+        if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
+            adapter.setCurrentType(AlbumAdapter.TYPE_PHOTO);
+            viewModel.getPicList(position);
+        }else{
+            albumPagerAdapter.setPiclist(adapter.getDataList());
+        }
+
     }
 
 
@@ -100,7 +107,7 @@ public class AlbumAcitcity extends BaseActivity {
         if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
             finish();
         } else {
-           // adapter.setType(AlbumAdapter.TYPE_FOLDER);
+            // adapter.setType(AlbumAdapter.TYPE_FOLDER);
         }
     }
 
@@ -110,10 +117,24 @@ public class AlbumAcitcity extends BaseActivity {
      * @param model
      */
     private void subscribeToModel(final AlbumViewModel model) {
+        /**
+         * 相册封面和图片列表
+         */
         model.getLiveObservableData().observe(this, ImageBean -> {
-            Log.d("all_folders",ImageBean.toString());
+            Log.d("all_folders", ImageBean.toString());
             adapter.setDataList(ImageBean);
-           // adapter.setType(AlbumAdapter.TYPE_FOLDER);
+            // adapter.setType(AlbumAdapter.TYPE_FOLDER);
+        });
+
+        /**
+         * 点击查看大图
+         */
+        model.getPhoto_livedata().observe(this, new Observer<ImageBean>() {
+            @Override
+            public void onChanged(ImageBean imageBean) {
+                activityAlbumBinding.rvPager.setVisibility(View.VISIBLE);
+
+            }
         });
     }
 }

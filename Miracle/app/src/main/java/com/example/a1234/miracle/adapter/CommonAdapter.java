@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.databinding.DataBindingUtil;
@@ -21,15 +22,15 @@ public abstract class CommonAdapter<DB extends ViewDataBinding, T> extends Recyc
      * Item点击回调
      */
     protected IAdapterClickInterface adapterClickInterface;
-    protected List<T> dataList;
+    protected ArrayList<T> dataList;
 
     private Context context;
 
-    public List<T> getDataList() {
+    public ArrayList<T> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<T> dataList) {
+    public void setDataList(ArrayList<T> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
@@ -40,7 +41,7 @@ public abstract class CommonAdapter<DB extends ViewDataBinding, T> extends Recyc
     }
 
 
-    public CommonAdapter(Context context, List<T> dataList, IAdapterClickInterface<DB, T> adapterClickInterface) {
+    public CommonAdapter(Context context, ArrayList<T> dataList, IAdapterClickInterface<DB, T> adapterClickInterface) {
         this.dataList = dataList;
         this.context = context;
         this.adapterClickInterface = adapterClickInterface;

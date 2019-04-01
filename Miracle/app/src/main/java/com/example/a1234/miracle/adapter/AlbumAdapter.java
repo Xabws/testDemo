@@ -47,7 +47,7 @@ public class AlbumAdapter extends CommonAdapter<AlbumLayoutBinding, ImageBean> {
     }
 
 
-    public AlbumAdapter(Context context, List<ImageBean> dataList, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface, int currentType) {
+    public AlbumAdapter(Context context, ArrayList<ImageBean> dataList, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface, int currentType) {
         super(context, dataList, adapterClickInterface);
         this.currentType = currentType;
     }
@@ -77,5 +77,9 @@ public class AlbumAdapter extends CommonAdapter<AlbumLayoutBinding, ImageBean> {
 
     public int getCurrentType() {
         return currentType;
+    }
+
+    public void setCurrentType(int currentType) {
+        this.currentType = currentType;
     }
 }

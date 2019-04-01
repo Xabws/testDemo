@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.utils.DeviceUtil;
+import com.example.baselib.retrofit.data.ImageBean;
 
 import java.util.ArrayList;
 
@@ -25,13 +26,18 @@ import butterknife.OnClick;
  */
 public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.DrawerHolder> {
     private Context context;
-    private ArrayList<String> piclist;
+    private ArrayList<ImageBean> piclist;
     private OnItemClickListener onItemClickListener;
     private int currentPosition = 0;
 
-    public AlbumPagerAdapter(Context context, ArrayList<String> piclist, OnItemClickListener onItemClickListener) {
+    public AlbumPagerAdapter(Context context, ArrayList<ImageBean> piclist, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.piclist = piclist;
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public AlbumPagerAdapter(Context contextt, OnItemClickListener onItemClickListener) {
+        this.context = context;
         this.onItemClickListener = onItemClickListener;
     }
 
@@ -50,7 +56,7 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
         return currentPosition;
     }
 
-    public ArrayList<String> getCurrentList() {
+    public ArrayList<ImageBean> getCurrentList() {
         return piclist;
     }
 
@@ -62,7 +68,7 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
         bannerViewHolder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(position, piclist.get(position));
+                onItemClickListener.onItemClick(position, piclist.get(position).getUrl());
             }
         });
         Glide.with(context).load(piclist.get(position)).override(s.getWidth() / 3, s.getWidth() / 3).into(bannerViewHolder.image);
@@ -95,5 +101,9 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setPiclist(ArrayList<ImageBean> piclist) {
+        this.piclist = piclist;
     }
 }
