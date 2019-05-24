@@ -86,6 +86,7 @@ public class AlbumAcitcity extends BaseActivity {
             adapter.setCurrentType(AlbumAdapter.TYPE_PHOTO);
             viewModel.getPicList(position);
         }else{
+            activityAlbumBinding.rvPager.setVisibility(View.VISIBLE);
             albumPagerAdapter.setPiclist(adapter.getDataList());
         }
 

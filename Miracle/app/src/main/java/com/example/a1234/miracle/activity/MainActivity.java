@@ -252,6 +252,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, ThreadTestActivity.class));
                 break;
             case R.id.nav_setting:
+                startActivity(new Intent(MainActivity.this, WebViewActivity.class));
                 break;
             case R.id.nav_suggestion:
                 break;

@@ -36,7 +36,7 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
         this.onItemClickListener = onItemClickListener;
     }
 
-    public AlbumPagerAdapter(Context contextt, OnItemClickListener onItemClickListener) {
+    public AlbumPagerAdapter(Context context, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.onItemClickListener = onItemClickListener;
     }
@@ -105,5 +105,6 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
 
     public void setPiclist(ArrayList<ImageBean> piclist) {
         this.piclist = piclist;
+        notifyDataSetChanged();
     }
 }
