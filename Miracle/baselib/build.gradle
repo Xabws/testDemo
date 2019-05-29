@@ -77,4 +77,6 @@ dependencies {
     api 'io.netty:netty-all:4.1.9.Final'
     api files('libs/commons-io-2.6.jar')
     api files('libs/commons-lang3-3.9.jar')
+    //fastjson
+    api rootProject.ext.supportDependencies.fastjson
 }

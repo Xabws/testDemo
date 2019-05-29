@@ -28,6 +28,7 @@
         <activity android:name=".activity.AlbumAcitcity"></activity>
         <activity android:name=".activity.ThreadTestActivity"></activity>
         <activity android:name=".activity.WebViewActivity"></activity>
+        <activity android:name=".activity.NettyActivity"></activity>
         <!--私有进程的名称前面有冒号,全局进程： android:process="com.miracle.process.service-->
         <!--这里选择”service_remote”这个名字是随意主观的，你能用其他名字来让这个服务在另外的进程中运行。
         冒号’:’这个前缀将把这个名字附加到你的包所运行的标准进程名字的后面作为新的进程名称。-->

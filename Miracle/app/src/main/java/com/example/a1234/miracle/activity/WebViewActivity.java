@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.AcitivityWebviewBinding;
-import com.example.a1234.miracle.utils.CrawlNews;
 import com.example.a1234.miracle.utils.CreateHtmlJsoup;
 import com.example.a1234.miracle.utils.LogUtils;
 
