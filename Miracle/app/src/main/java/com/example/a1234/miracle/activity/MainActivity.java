@@ -20,14 +20,11 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.a1234.miracle.IMyAidlInterface;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.LatestAdapter;
-import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecyclerView;
 import com.example.a1234.miracle.customview.loadmorerecycleview.OnPullUpRefreshListener;
 import com.example.a1234.miracle.databinding.ActivityMainBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
@@ -35,8 +32,6 @@ import com.example.a1234.miracle.service.MiracleProcessService;
 import com.example.a1234.miracle.utils.blurkit.BlurKit;
 import com.example.a1234.miracle.viewmodel.ZHNewsViewModel;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
-import com.example.baselib.retrofit.API;
-import com.example.baselib.retrofit.data.WeatherBean;
 import com.example.baselib.retrofit.data.ZHNewsListData;
 import com.example.baselib.retrofit.data.ZHStory;
 import com.google.android.material.navigation.NavigationView;
@@ -49,14 +44,8 @@ import java.util.ArrayList;
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import butterknife.BindView;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -255,7 +244,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, WebViewActivity.class));
                 break;
             case R.id.nav_suggestion:
-                startActivity(new Intent(MainActivity.this, NettyActivity.class));
+                startActivity(new Intent(MainActivity.this, SocketActivity.class));
                 break;
             case R.id.nav_about:
                 break;
