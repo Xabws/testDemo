@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class ZHStory {
     ArrayList<String> images;
     int type;
-    String id;
+    int id;
     String ga_prefix;
     String title;
 
@@ -42,11 +42,11 @@ public class ZHStory {
         this.type = type;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

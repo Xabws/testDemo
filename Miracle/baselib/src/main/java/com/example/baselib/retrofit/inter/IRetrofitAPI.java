@@ -25,17 +25,17 @@ public interface IRetrofitAPI {
     // 其中返回类型为Call<*>，*是接收数据的类（Reception）
     // 如果想直接获得Responsebody中的内容，可以定义网络请求返回值为Call<ResponseBody>
     @GET(API.DETAILS)
-    Observable<ZHContent> getNewsDetail(@Path("newsId") String NewsId);
+    Observable<ZHContent> getNewsDetail(@Path("newsId") int NewsId);
 
     @GET(API.NEWS_EXTRA)
-    Observable<ZHNewsExtra> getNewsExtra(@Path("newsId") String NewsId);
+    Observable<ZHNewsExtra> getNewsExtra(@Path("newsId") int NewsId);
 
     @GET(API.NEWS_BEFORE)
     Observable<ZHNewsListData> getOldNews(@Path("date") long date);
 
     @GET(API.NEWS_COMMENT_LONG)
-    Observable<ZHCommend> getLongNewsComment(@Path("newsId") String newsId);
+    Observable<ZHCommend> getLongNewsComment(@Path("newsId") int newsId);
 
     @GET(API.NEWS_COMMENT_SHORT)
-    Observable<ZHCommend> getShortNewsComment(@Path("newsId") String newsId);
+    Observable<ZHCommend> getShortNewsComment(@Path("newsId") int newsId);
 }

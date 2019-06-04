@@ -63,7 +63,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private int mRefreshState = STATE_REFRESH_FINISH;
     // 抽屉菜单对象
     private DrawerToggle mDrawerToggle; //侧滑菜单状态监听器
-    private ArrayList<ZHStory> zhStoryArrayList;
     private IMyAidlInterface mStub;
     private LatestAdapter latestAdapter;
     private ZHNewsViewModel viewModel;
@@ -84,8 +83,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         activityMainBinding = DataBindingUtil.setContentView(this, getContentViewId());
         latestAdapter = new LatestAdapter(this, new LatestAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                EventBus.getDefault().postSticky(new MessageEvent(viewModel.getNewsList().get(position).getId()));
+            public void onItemClick(int newsId) {
+                EventBus.getDefault().postSticky(new MessageEvent(newsId));
                 Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
                 startActivity(intent);
             }
@@ -339,7 +338,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onChanged(ZHNewsListData zhNewsListData) {
                 if (zhNewsListData != null) {
                     model.setUiObservableData(zhNewsListData);
-                    latestAdapter.setData(zhNewsListData.getStories());
+                    latestAdapter.setData(zhNewsListData);
                     if (activityMainBinding.layoutReadingContent.isRefreshing())
                         activityMainBinding.layoutReadingContent.setRefreshing(false);
                     mRefreshState = STATE_REFRESH_FINISH;

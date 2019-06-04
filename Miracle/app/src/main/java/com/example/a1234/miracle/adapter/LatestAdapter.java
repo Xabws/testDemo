@@ -2,6 +2,7 @@ package com.example.a1234.miracle.adapter;
 
 import android.content.Context;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,26 +14,32 @@ import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.customview.MyViewPager;
 import com.example.a1234.miracle.customview.PagerItemView;
 import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecycleAdapter;
+import com.example.a1234.miracle.utils.LogUtils;
+import com.example.baselib.retrofit.data.ZHNewsListData;
 import com.example.baselib.retrofit.data.ZHStory;
+import com.example.baselib.retrofit.data.ZHTopStory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LatestAdapter extends LoadMoreRecycleAdapter {
     private Context context;
-    private ArrayList<ZHStory> list;
+    private ZHNewsListData data;
     private OnItemClickListener onItemClickListener;
-    private NewSPagerAdapter newSPagerAdapter;
+    private ViewPager2Adapter newSPagerAdapter;
 
-    public LatestAdapter(ArrayList<ZHStory> list, Context context) {
-        this.list = list;
+    public LatestAdapter(ZHNewsListData data, Context context) {
+        this.data = data;
         this.context = context;
     }
 
@@ -46,9 +53,13 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
         switch (getItemViewType(position)) {
             case 0:
                 if (newSPagerAdapter == null) {
-                    newSPagerAdapter = new NewSPagerAdapter(this.context);
-                    int max = list.size() > 5 ? 5 : list.size();
-                    newSPagerAdapter.setList(list.subList(0, max));
+                    newSPagerAdapter = new ViewPager2Adapter(this.context, new ViewPager2Adapter.PagerItemClickListener() {
+                        @Override
+                        public void onItemClick(int newsId) {
+                            onItemClickListener.onItemClick(newsId);
+                        }
+                    });
+                    newSPagerAdapter.setDataList(data.getTop_stories());
                     PagerHolder pagerHolder = (PagerHolder) holder;
                     pagerHolder.view_pager.setAdapter(newSPagerAdapter);
                 }
@@ -58,11 +69,11 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
                 bannerViewHolder.rl_main.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemClickListener.onItemClick(position - 1);
+                        onItemClickListener.onItemClick(data.getStories().get(position - 1).getId());
                     }
                 });
-                bannerViewHolder.tvTitle.setText(list.get(position - 1).getTitle());
-                Glide.with(context).load(list.get(position - 1).getImages().get(0)).into(bannerViewHolder.ivCover);
+                bannerViewHolder.tvTitle.setText(data.getStories().get(position - 1).getTitle());
+                Glide.with(context).load(data.getStories().get(position - 1).getImages().get(0)).into(bannerViewHolder.ivCover);
                 break;
         }
     }
@@ -79,7 +90,7 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
 
     @Override
     public int getDataSize() {
-        return list == null ? 0 : list.size();
+        return data != null ? data.getStories().size() + 1 : 0;
     }
 
     @Override
@@ -107,27 +118,15 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
         super.onBindViewHolder(holder, position, payloads);
     }
 
-    public void setData(ArrayList<ZHStory> list) {
-        this.list = list;
+    public void setData(ZHNewsListData data) {
+        this.data = data;
         notifyDataSetChanged();
     }
 
-    /*
-        static class PagerHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.cl_pager)
-            ConstraintLayout cl_pager;
-            @BindView(R.id.iv_page)
-            ImageView iv_page;
-            @BindView(R.id.tv_pager)
-            TextView tv_pager;
-            public PagerHolder(View itemView) {
-                super(itemView);
-                ButterKnife.bind(this, itemView);
-            }
-        }*/
+
     static class PagerHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.view_pager)
-        MyViewPager view_pager;
+        ViewPager2 view_pager;
 
         public PagerHolder(View itemView) {
             super(itemView);
@@ -149,70 +148,16 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
         }
     }
 
-    //viewpager的aderpter
-
-    private class NewSPagerAdapter extends PagerAdapter {
-        private List<PagerItemView> pagerList;
-        private List<ZHStory> dataList;
-        private Context mContext;
-
-        public NewSPagerAdapter(Context mContext) {
-            this.mContext = mContext;
-        }
-
-        public void setList(List<ZHStory> list) {
-            this.dataList = list;
-            pagerList = new ArrayList<>();
-           for( int i=0;i<dataList.size();i++ ){
-               pagerList.add(new PagerItemView(mContext,dataList.get(i).getImages().get(0),dataList.get(i).getTitle()));
-           }
-        }
-
-        @Override
-        public int getCount() {
-            return this.pagerList == null ? 0 : this.pagerList.size();
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            container.addView(pagerList.get(position));
-            return pagerList.get(position);
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
-        }
-
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == object;
-        }
-
-        @Override
-        public void restoreState(Parcelable arg0, ClassLoader arg1) {
-
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
-
-    }
-
     @OnClick({R.id.ll})
     public void onViewClicked() {
-
     }
 
+
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int newsId);
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
-
 }

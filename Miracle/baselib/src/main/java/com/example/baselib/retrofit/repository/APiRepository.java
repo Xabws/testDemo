@@ -19,13 +19,13 @@ public class APiRepository {
         return observableForGetFuliDataFromNetWork;
     }
 
-    public static Observable<ZHContent> getNewsDetailRepository(String NewsId) {
+    public static Observable<ZHContent> getNewsDetailRepository(int NewsId) {
         Observable<ZHContent> observableForGetAndroidDataFromNetWork = ApiClient.getApiService().getNewsDetail(NewsId);
         //可以操作Observable来筛选网络或者是本地数据
         return observableForGetAndroidDataFromNetWork;
     }
 
-    public static Observable<ZHNewsExtra> getNewsExtraRepository(String NewsId) {
+    public static Observable<ZHNewsExtra> getNewsExtraRepository(int NewsId) {
         Observable<ZHNewsExtra> observableForGetAndroidDataFromNetWork = ApiClient.getApiService().getNewsExtra(NewsId);
         //可以操作Observable来筛选网络或者是本地数据
         return observableForGetAndroidDataFromNetWork;
@@ -38,13 +38,13 @@ public class APiRepository {
     }
 
 
-    public static Observable<ZHCommend> getLongNewsCommentRepository(String NewsId) {
+    public static Observable<ZHCommend> getLongNewsCommentRepository(int NewsId) {
         Observable<ZHCommend> observableForGetAndroidDataFromNetWork = ApiClient.getApiService().getLongNewsComment(NewsId);
         //可以操作Observable来筛选网络或者是本地数据
         return observableForGetAndroidDataFromNetWork;
     }
 
-    public static Observable<ZHCommend> getShortNewsCommentRepository(String NewsId) {
+    public static Observable<ZHCommend> getShortNewsCommentRepository(int NewsId) {
         Observable<ZHCommend> observableForGetAndroidDataFromNetWork = ApiClient.getApiService().getShortNewsComment(NewsId);
         //可以操作Observable来筛选网络或者是本地数据
         return observableForGetAndroidDataFromNetWork;

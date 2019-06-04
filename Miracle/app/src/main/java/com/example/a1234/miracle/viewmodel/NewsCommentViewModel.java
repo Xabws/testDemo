@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
  * @date 2019/3/27
  */
 public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
-    private String newsId;
+    private int newsId;
     private Application application;
     /**
      * 主界面list的livedata的观察者对象
@@ -60,7 +60,7 @@ public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
         });
     }
 
-    private MutableLiveData<ZHCommend> getComment(String newsId, boolean isLongComment) {
+    private MutableLiveData<ZHCommend> getComment(int newsId, boolean isLongComment) {
         /**
          * 在 Activity 或是 Fragment 中改变 LiveData的数据值使用MutableLiveData
          * 在ViewModel中使用MutableLiveData，然后ViewModel仅向Observer公开不可变的LiveData对象
@@ -104,7 +104,7 @@ public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
         return mLiveObservableData_long;
     }
 
-    public void setNewsId(String newsId) {
+    public void setNewsId(int newsId) {
         this.newsId = newsId;
         init();
     }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ZHNewsListData;
 import com.example.baselib.retrofit.data.ZHStory;
+import com.example.baselib.retrofit.data.ZHTopStory;
 import com.example.baselib.retrofit.repository.APiRepository;
 import com.example.baselib.retrofit.util.NetUtils;
 
@@ -16,6 +17,7 @@ import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -29,7 +31,9 @@ import io.reactivex.schedulers.Schedulers;
 public class ZHNewsViewModel extends BaseViewModel<ZHNewsListData> {
     public static final int DATECURRENT = -1;
     private long currentDate;
-    private ArrayList<ZHStory>newsList;
+    private ArrayList<ZHStory> newsList;
+    private ArrayList<ZHTopStory> bannerList;
+
     /**
      * 主界面list的livedata的观察者对象
      */
@@ -83,10 +87,14 @@ public class ZHNewsViewModel extends BaseViewModel<ZHNewsListData> {
                     @Override
                     public void onNext(ZHNewsListData zhNewsListData) {
                         if (date != DATECURRENT) {
-                            if (newsList!=null){
+                            if (newsList != null) {
                                 newsList.addAll(zhNewsListData.getStories());
                             }
+                            if (bannerList != null && zhNewsListData.getTop_stories() != null) {
+                                bannerList.addAll(zhNewsListData.getTop_stories());
+                            }
                             zhNewsListData.setStories(newsList);
+                            zhNewsListData.setTop_stories(bannerList);
                             applyData.setValue(zhNewsListData);
                         } else {
                             /**
@@ -95,7 +103,12 @@ public class ZHNewsViewModel extends BaseViewModel<ZHNewsListData> {
                             currentDate = Long.parseLong(zhNewsListData.getDate());
                             newsList = new ArrayList<>();
                             newsList.addAll(zhNewsListData.getStories());
+                            if (zhNewsListData.getTop_stories() != null) {
+                                bannerList = new ArrayList<>();
+                                bannerList.addAll(zhNewsListData.getTop_stories());
+                            }
                             zhNewsListData.setStories(newsList);
+                            zhNewsListData.setTop_stories(bannerList);
                             applyData.postValue(zhNewsListData);
                         }
                     }

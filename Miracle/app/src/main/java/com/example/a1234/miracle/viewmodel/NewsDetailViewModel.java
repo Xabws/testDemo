@@ -37,14 +37,14 @@ public class NewsDetailViewModel extends BaseViewModel<ZHNewsDetail> {
     private Application application;
     //回调给Acitvity的livedata；
     private LiveData<ZHNewsDetail> mLiveObservableData;
-    private String NewsId;
+    private int NewsId;
 
     public NewsDetailViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
     }
 
-    public void init(String newsId) {
+    public void init(int newsId) {
         NewsId = newsId;
         mLiveObservableData = Transformations.switchMap(NetUtils.netConnected(application), new Function<Boolean, LiveData<ZHNewsDetail>>() {
             @Override
@@ -56,7 +56,7 @@ public class NewsDetailViewModel extends BaseViewModel<ZHNewsDetail> {
         });
     }
 
-    private MutableLiveData<ZHNewsDetail> concatRequest(String newsId) {
+    private MutableLiveData<ZHNewsDetail> concatRequest(int newsId) {
         MutableLiveData<ZHNewsDetail> mutableLiveData = new MutableLiveData<>();
         ZHNewsDetail zhNewsDetail = new ZHNewsDetail();
         //获取文章正文
@@ -99,7 +99,7 @@ public class NewsDetailViewModel extends BaseViewModel<ZHNewsDetail> {
         return mutableLiveData;
     }
 
-    public String getNewsId() {
+    public int getNewsId() {
         return NewsId;
     }
 

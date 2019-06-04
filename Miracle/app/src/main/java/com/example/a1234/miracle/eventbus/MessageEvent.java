@@ -2,16 +2,16 @@ package com.example.a1234.miracle.eventbus;
 
 
 public class MessageEvent {
-    public String message;
-    public MessageEvent(String message) {
+    public int message;
+    public MessageEvent(int message) {
         this.message = message;
     }
 
-    public String getMessage() {
+    public int getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(int message) {
         this.message = message;
     }
 }
