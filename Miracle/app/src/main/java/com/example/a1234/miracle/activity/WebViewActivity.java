@@ -1,5 +1,6 @@
 package com.example.a1234.miracle.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.webkit.WebSettings;
@@ -11,6 +12,9 @@ import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.AcitivityWebviewBinding;
 import com.example.a1234.miracle.utils.CreateHtmlJsoup;
 import com.example.a1234.miracle.utils.LogUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * @author wsbai
@@ -29,8 +33,14 @@ public class WebViewActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-               String folder =  CreateHtmlJsoup.makeHeatMapHtml(WebViewActivity.this,"https://ibaotu.com/sucai/18059170.html");
+               String folder =  CreateHtmlJsoup.makeHeatMapHtml(WebViewActivity.this,"https://hz.nuomi.com/?lf=2");
                 LogUtils.d(folder);
+                WebViewActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        acitivityWebviewBinding.webView.loadUrl("file://"+folder+"index.html");
+                    }
+                });
             }
         }).start();
         acitivityWebviewBinding = DataBindingUtil.setContentView(this, getContentViewId());
@@ -60,9 +70,25 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true); //支持通过JS打开新窗口
         webSettings.setLoadsImagesAutomatically(true); //支持自动加载图片
         webSettings.setDefaultTextEncodingName("utf-8");//设置编码格式
-
-        acitivityWebviewBinding.webView.loadUrl("https://www.baidu.com");
-      /*  String saves = Environment.getExternalStorageDirectory()+"/sssss";
-        acitivityWebviewBinding.webView.saveWebArchive(saves);*/
+        //https://blog.csdn.net/salute_li/article/details/52302393
+        try {
+            if (Build.VERSION.SDK_INT >= 16) {
+                Class<?> clazz = acitivityWebviewBinding.webView.getSettings().getClass();
+                Method method = clazz.getMethod(
+                        "setAllowUniversalAccessFromFileURLs", boolean.class);
+                if (method != null) {
+                    method.invoke(acitivityWebviewBinding.webView.getSettings(), true);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        acitivityWebviewBinding.webView.loadUrl("https://www.bcyun.com");
     }
 }

@@ -28,7 +28,7 @@ public class CreateHtmlJsoup {
         String filepath = "";//
         String filename = "";//
         String ecoding = "";//
-        String urlFolder = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
+        String urlFolder = "/"+System.currentTimeMillis()+"";
         filepath = context.getExternalCacheDir().getPath() + urlFolder + "/";
 //        filepath = Environment.getExternalStorageDirectory()+"/aaa.temp/";
         filename = "index.html";// 文件名称
@@ -281,7 +281,7 @@ public class CreateHtmlJsoup {
         Document doc = null;
         try {
 
-            doc = Jsoup.connect(url).timeout(timeout).get();// 根据Url抓取页面放入document对象
+            doc = Jsoup.connect(url).header("Accept-Encoding", "gzip, deflate").userAgent("Mozilla/5.0 (Windows NT 5.1; zh-CN) AppleWebKit/535.12 (KHTML, like Gecko) Chrome/22.0.1229.79 Safari/535.12").timeout(timeout).maxBodySize(0).get();// 根据Url抓取页面放入document对象
             makeHtmlLinkFile(doc, filepath, timeout);// 根据u网页中css、js、img链接地址及文件名生成本地文件
             renameHref(doc);// 把页面中link标签中的href属性改为本地的相对路径,正确加载css样式
             removeHref(doc);// 去掉A链接

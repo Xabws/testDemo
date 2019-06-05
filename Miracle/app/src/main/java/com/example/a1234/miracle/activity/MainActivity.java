@@ -86,6 +86,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onItemClick(int newsId) {
                 EventBus.getDefault().postSticky(new MessageEvent(newsId));
                 Intent intent = new Intent(MainActivity.this, NewsDetailActivity.class);
+//                Intent intent = new Intent(MainActivity.this, NewsDetailActivity2.class);
                 startActivity(intent);
             }
         });

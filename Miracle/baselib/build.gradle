@@ -9,7 +9,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -83,4 +83,5 @@ dependencies {
     api ('io.socket:socket.io-client:0.8.3') {
         exclude group: 'org.json', module: 'json'
     }
+    api 'com.android.support:multidex:1.0.2'
 }

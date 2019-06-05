@@ -1,5 +1,6 @@
 package com.example.a1234.miracle.adapter;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Parcelable;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
     private ZHNewsListData data;
     private OnItemClickListener onItemClickListener;
     private ViewPager2Adapter newSPagerAdapter;
+    ValueAnimator valueAnimator;
 
     public LatestAdapter(ZHNewsListData data, Context context) {
         this.data = data;
@@ -159,5 +161,24 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
+    }
+
+    private void setBanner(ViewPager2 viewPager2) {
+        int currentItem = viewPager2.getCurrentItem();
+        int size = data.getTop_stories().size();
+        valueAnimator = ValueAnimator.ofInt(0,size-1);
+        valueAnimator.setDuration(4000);
+        valueAnimator.setRepeatMode(ValueAnimator.RESTART);
+        valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        valueAnimator.start();
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value =(int)animation.getAnimatedValue();
+                Log.d("xxxxxx",value+"");
+                viewPager2.setCurrentItem(value);
+            }
+        });
+
     }
 }

@@ -1,5 +1,9 @@
 package com.example.a1234.miracle.utils;
 
+import com.example.baselib.retrofit.data.ZHCommend;
+import com.example.baselib.retrofit.data.ZHCommendData;
+import com.example.baselib.retrofit.data.ZHContent;
+
 import java.util.List;
 
 public class HtmlUtil {
@@ -75,5 +79,27 @@ public class HtmlUtil {
     final String css = HtmlUtil.createCssTag(cssList);
     final String js = HtmlUtil.createJsTag(jsList);
     return css.concat(HIDE_HEADER_STYLE).concat(html).concat(js);
+  }
+
+  /**
+   * 生成知乎日报详情页(添加头布局)
+   * @param storyDetailsEntity
+   * @return
+   */
+  public static String structHtml(ZHContent storyDetailsEntity) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("<div class=\"img-wrap\">")
+            .append("<h1 class=\"headline-title\">")
+            .append(storyDetailsEntity.getTitle()).append("</h1>")
+            .append("<span class=\"img-source\">")
+            .append(storyDetailsEntity.getImage_source()).append("</span>")
+            .append("<img src=\"").append(storyDetailsEntity.getImage())
+            .append("\" alt=\"\">")
+            .append("<div class=\"img-mask\"></div>");
+    //news_content_style.css和news_header_style.css都是在assets里的
+    String mNewsContent = "<link rel=\"stylesheet\" type=\"text/css\" href=\"news_content_style.css\"/>"
+            + "<link rel=\"stylesheet\" type=\"text/css\" href=\"news_header_style.css\"/>"
+            + storyDetailsEntity.getBody().replace("<div class=\"img-place-holder\">", sb.toString());
+    return mNewsContent;
   }
 }

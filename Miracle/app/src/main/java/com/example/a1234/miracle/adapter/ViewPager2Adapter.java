@@ -63,4 +63,5 @@ class ViewPager2Adapter extends RecyclerView.Adapter<PagerItemView> {
         public void setPagerItemClickListener(PagerItemClickListener PagerItemClickListener) {
             this.PagerItemClickListener = PagerItemClickListener;
         }
+
     }

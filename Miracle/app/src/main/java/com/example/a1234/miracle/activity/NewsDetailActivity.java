@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -28,6 +31,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
 /**
+ * 该页面的头布局由Android原生控件生成
  * Created by a1234 on 2018/9/10.
  */
 public class NewsDetailActivity extends BaseActivity implements View.OnClickListener {
@@ -59,13 +63,29 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void initView(Bundle savedInstanceState) {
         activityNewsDetailBinding = DataBindingUtil.setContentView(this, getContentViewId());
-        WebSettings webSettings = activityNewsDetailBinding.wvContent.getSettings();//获取webview设置属性
+       /* WebSettings webSettings = activityNewsDetailBinding.wvContent.getSettings();//获取webview设置属性
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);//把html中的内容放大webview等宽的一列中
         webSettings.setJavaScriptEnabled(true);//支持js
         activityNewsDetailBinding.wvContent.setWebViewClient(new MyWebViewClient());
         activityNewsDetailBinding.wvContent.addJavascriptInterface(new JavaScriptInterface(this), "imagelistner");//这个是给图片设置点击监听的，如果你项目需要webview中图片，点击查看大图功能，可以这么添加
         // webSettings.setBuiltInZoomControls(true); // 显示放大缩小
         // webSettings.setSupportZoom(true); // 可以缩放
+        activityNewsDetailBinding.wvContent.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        activityNewsDetailBinding.wvContent.setVerticalScrollBarEnabled(false);
+        activityNewsDetailBinding.wvContent.setHorizontalScrollBarEnabled(false);
+        activityNewsDetailBinding.wvContent.setHorizontalScrollbarOverlay(false);*/
+        WebSettings webSettings = activityNewsDetailBinding.wvContent.getSettings();
+        webSettings.setBlockNetworkImage(false);//不阻塞网络图片
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { //允许混合（http，https） //websettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
+            webSettings.setJavaScriptEnabled(true);
+        }
+        activityNewsDetailBinding.wvContent.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                handler.proceed();//接受所有网站的证书
+            }
+        });
         activityNewsDetailBinding.clTitle.bringToFront();
         activityNewsDetailBinding.scrollview.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
@@ -115,7 +135,7 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
          mimeType :指定HTML 代码的 MIME类型.对于HTML代码可指定为text/html .
          encoding :指定HTML 代码的代码编码所用的字符集.比如指定 UTF-8.
          */
-        activityNewsDetailBinding.wvContent.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+        activityNewsDetailBinding.wvContent.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "UTF-8", null);
     }
 
     @Override
@@ -129,14 +149,14 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            imgReset();//重置webview中img标签的图片大小
+//            imgReset();//重置webview中img标签的图片大小
             // html加载完成之后，添加监听图片的点击js函数
-            addImageClickListner();
+//            addImageClickListner();
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
+            //  view.loadUrl(url);
             return true;
         }
 
@@ -241,8 +261,10 @@ public class NewsDetailActivity extends BaseActivity implements View.OnClickList
 
                     }
                 });
-                String htmlData = HtmlUtil.createHtmlData(zhCommend.getZhContent().getBody(), zhCommend.getZhContent().getCss(), zhCommend.getZhContent().getJs());
-                addWebView(htmlData);
+                String html = "<html><head><link rel=\"stylesheet\" type=\"text/css\" href=\"ZhiHuCSS.css\"/></head><body>" + zhCommend.getZhContent().getBody() + "</body></html>";
+                activityNewsDetailBinding.wvContent.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", null);
+//                String htmlData  = HtmlUtil.structHtml(zhCommend.getZhContent());
+//                addWebView(htmlData);
                 if (zhCommend.getZhNewsExtra() != null) {
                     activityNewsDetailBinding.tvComment.setText(zhCommend.getZhNewsExtra().getComments() + "");
                     activityNewsDetailBinding.tvLike.setText(zhCommend.getZhNewsExtra().getPopularity() + "");
