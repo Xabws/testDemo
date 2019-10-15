@@ -23,10 +23,10 @@ android {
     dataBinding {
         enabled true
     }
-
 }
 
 dependencies {
+    //implementation:内部使用，api可以提供给外部
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -53,22 +53,22 @@ dependencies {
     //Dalvik 可执行文件分包支持库(65536问题)
     api 'androidx.multidex:multidex:2.0.1'
     //Gson converter
-    api 'com.squareup.retrofit2:converter-gson:2.1.0'
+    api 'com.squareup.retrofit2:converter-gson:2.5.0'
     //RxJava2 Adapter
     api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
     //rxandroid2
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
     //rxjava
     api 'io.reactivex.rxjava2:rxjava:2.2.2'
     // Log信息拦截器
-    api 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     //Lottie
     api 'com.airbnb.android:lottie:2.3.1'
     //fresco
     api 'com.facebook.fresco:fresco:1.9.0'
     //api 'com.android.support:palette-v7:27.1.1'
     //google推出的基于recycleview的viewpager
-    api 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
+    api 'androidx.viewpager2:viewpager2:1.0.0-beta05'
     //butterknife
     api 'com.jakewharton:butterknife:8.4.0'
     //权限生成框架
@@ -80,8 +80,26 @@ dependencies {
     //fastjson
     api rootProject.ext.supportDependencies.fastjson
     //socketIO
-    api ('io.socket:socket.io-client:0.8.3') {
+    api('io.socket:socket.io-client:0.8.3') {
         exclude group: 'org.json', module: 'json'
     }
-    api 'com.android.support:multidex:1.0.2'
+    api 'com.android.support:multidex:1.0.3'
+    //room（ORM库）
+    // add for room
+    api "android.arch.persistence.room:runtime:1.1.1"
+    // room 配合 RxJava
+    api "android.arch.persistence.room:rxjava2:1.1.1"
+    //annotationProcessor 用于编译期间根据注解(Annotation)获取相关数据。
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
+    //android workmanager后台管理类
+    api "android.arch.work:work-runtime:1.0.1"
+    // optional - Firebase JobDispatcher support
+    api "android.arch.work:work-firebase:1.0.0-alpha11"
+    //java websocket
+    api "org.java-websocket:Java-WebSocket:1.4.0"
+    //jsoup 爬虫工具
+    api 'org.jsoup:jsoup:1.10.3'
+    //全剧通知Toast
+    api 'com.hjq:toast:8.0'
+
 }

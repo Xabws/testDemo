@@ -1,9 +1,6 @@
 package com.example.a1234.miracle.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -12,17 +9,13 @@ import androidx.databinding.DataBindingUtil;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.AcitivityNettyBinding;
-import com.example.a1234.miracle.netty.IMSClientBootstrap;
-import com.example.a1234.miracle.utils.LogUtils;
-import com.example.baselib.netty.im.IMSConfig;
+import com.example.a1234.miracle.websocket.JWebSocketClient;
+import com.example.baselib.utils.LogUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URISyntaxException;
-
-import io.socket.client.IO;
-import io.socket.client.Socket;
+import java.net.URI;
 import io.socket.emitter.Emitter;
 
 /**
@@ -31,8 +24,6 @@ import io.socket.emitter.Emitter;
  */
 public class SocketActivity extends BaseActivity {
     private AcitivityNettyBinding acitivityNettyBinding;
-    private IMSClientBootstrap imsClientBootstrap;
-    private Socket mSocket;
     public static final String CHAT_SERVER_URL = "https://socket-io-chat.now.sh/";
     private String TAG = "SocketActivity";
     private Boolean isConnected = true;
@@ -45,7 +36,6 @@ public class SocketActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initSocket();
     }
 
     @Override
@@ -55,9 +45,19 @@ public class SocketActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //注册到socket服务器
-                mSocket.emit("add user", System.currentTimeMillis());
-              /*  imsClientBootstrap = IMSClientBootstrap.getInstance();
-                imsClientBootstrap.init("192.168.2.171", IMSConfig.APP_STATUS_FOREGROUND);*/
+                URI uri = URI.create("wss://echo.websocket.org");
+                JWebSocketClient client = new JWebSocketClient(uri){
+                    @Override
+                    public void onMessage(String message) {
+                        super.onMessage(message);
+                        Log.d("ws::", message);
+                    }
+                };
+                try {
+                    client.connectBlocking();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         });
         acitivityNettyBinding.btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +68,6 @@ public class SocketActivity extends BaseActivity {
                     return;
                 }
                 acitivityNettyBinding.etInput.setText("");
-                mSocket.emit("new message", text);
             }
         });
        /* acitivityNettyBinding.etInput.addTextChangedListener(new TextWatcher() {
@@ -93,29 +92,6 @@ public class SocketActivity extends BaseActivity {
 
     }
 
-    protected void initSocket() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mSocket = IO.socket(CHAT_SERVER_URL);
-                } catch (URISyntaxException e) {
-                    LogUtils.d(e.toString());
-                    throw new RuntimeException(e);
-                }
-                mSocket.on(Socket.EVENT_CONNECT, onConnect);
-                mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
-                mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-                mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-                mSocket.on("new message", onNewMessage);
-                mSocket.on("user joined", onUserJoined);
-                mSocket.on("user left", onUserLeft);
-                mSocket.on("typing", onTyping);
-                mSocket.on("stop typing", onStopTyping);
-                mSocket.connect();
-            }
-        }).start();
-    }
 
     private Emitter.Listener onLogin = new Emitter.Listener() {
         @Override
@@ -287,16 +263,5 @@ public class SocketActivity extends BaseActivity {
     public void onDestroy() {
         super.onDestroy();
 
-        mSocket.disconnect();
-
-        mSocket.off(Socket.EVENT_CONNECT, onConnect);
-        mSocket.off(Socket.EVENT_DISCONNECT, onDisconnect);
-        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.off("new message", onNewMessage);
-      /*  mSocket.off("user joined", onUserJoined);
-        mSocket.off("user left", onUserLeft);
-        mSocket.off("typing", onTyping);
-        mSocket.off("stop typing", onStopTyping);*/
     }
 }

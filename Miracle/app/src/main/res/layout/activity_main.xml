@@ -35,19 +35,19 @@
                     android:layout_height="match_parent"
                     android:descendantFocusability="afterDescendants">
 
-                    <com.example.a1234.miracle.customview.SwipeRefreshPagerLayout
+                    <com.example.baselib.widget.SwipeRefreshPagerLayout
                         android:id="@+id/layout_reading_content"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecyclerView
+                        <com.example.baselib.widget.loadmorerecycleview.LoadMoreRecyclerView
                             android:id="@+id/rv_news"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:adapter="@{recyclerAdapter}"
                             app:layoutManager="LinearLayoutManager"/>
 
-                    </com.example.a1234.miracle.customview.SwipeRefreshPagerLayout>
+                    </com.example.baselib.widget.SwipeRefreshPagerLayout>
                 </FrameLayout>
             </RelativeLayout>
         </LinearLayout>

@@ -1,9 +1,7 @@
 package com.example.a1234.miracle.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
-import com.example.a1234.miracle.utils.DateFormatUtil;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ZHCommend;
 import com.example.baselib.retrofit.repository.APiRepository;
@@ -14,6 +12,7 @@ import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -68,7 +67,7 @@ public class NewsCommentViewModel extends BaseViewModel<ZHCommend> {
          */
         MutableLiveData<ZHCommend> applyData = new MutableLiveData<>();
         Observable<ZHCommend> newsObservable;
-        newsObservable = isLongComment ?  APiRepository.getLongNewsCommentRepository(newsId):  APiRepository.getShortNewsCommentRepository(newsId);
+        newsObservable = isLongComment ? APiRepository.getLongNewsCommentRepository(newsId) : APiRepository.getShortNewsCommentRepository(newsId);
         newsObservable.subscribeOn(Schedulers.io())// 指定 subscribe() 发生在 IO 线程
                 .observeOn(AndroidSchedulers.mainThread())//指定 Subscriber 的回调发生在主线程
                 .subscribe(new Observer<ZHCommend>() {

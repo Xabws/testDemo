@@ -58,7 +58,7 @@
                 app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.example.a1234.miracle.customview.MyScrollview
+        <com.example.baselib.widget.MyScrollview
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -147,6 +147,6 @@
                        />
                 </RelativeLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.example.a1234.miracle.customview.MyScrollview>
+        </com.example.baselib.widget.MyScrollview>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

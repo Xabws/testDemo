@@ -5,14 +5,13 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.customview.CardDialog;
-import com.example.a1234.miracle.utils.ImageUtils;
+import com.example.baselib.utils.ImageUtils;
+import com.example.baselib.widget.CardDialog;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -79,7 +78,7 @@ public class BigImageAcitivity extends BaseActivity {
             cardDialog.setClickInterFace(new CardDialog.ClickInterFace() {
                 @Override
                 public void ok() {
-                    ImageUtils.saveBmp2Gallery(bitmap,System.currentTimeMillis()+"");
+                    ImageUtils.saveBmp2Gallery(bitmap,System.currentTimeMillis()+"",BigImageAcitivity.this);
                 }
 
                 @Override

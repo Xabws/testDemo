@@ -2,16 +2,14 @@ package com.example.a1234.miracle.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
 
 import androidx.databinding.DataBindingUtil;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.AcitivityWebviewBinding;
-import com.example.a1234.miracle.utils.CreateHtmlJsoup;
-import com.example.a1234.miracle.utils.LogUtils;
+import com.example.baselib.utils.CreateHtmlJsoup;
+import com.example.baselib.utils.LogUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -27,6 +25,7 @@ public class WebViewActivity extends BaseActivity {
     public int getContentViewId() {
         return R.layout.acitivity_webview;
     }
+
 
     @Override
     protected void initView(Bundle savedInstanceState) {

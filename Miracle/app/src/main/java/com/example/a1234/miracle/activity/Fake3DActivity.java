@@ -5,7 +5,7 @@ import android.os.Environment;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.customview.ShowFake3DView;
+import com.example.baselib.widget.ShowFake3DView;
 
 import java.io.File;
 import java.util.ArrayList;

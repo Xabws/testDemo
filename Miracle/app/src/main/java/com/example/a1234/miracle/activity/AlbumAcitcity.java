@@ -3,37 +3,22 @@ package com.example.a1234.miracle.activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ImageView;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.AlbumAdapter;
 import com.example.a1234.miracle.adapter.AlbumPagerAdapter;
 import com.example.a1234.miracle.adapter.IAdapterClickInterface;
-import com.example.a1234.miracle.customview.SpacesItemDecoration;
 import com.example.a1234.miracle.databinding.ActivityAlbumBinding;
 import com.example.a1234.miracle.databinding.AlbumLayoutBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
-import com.example.a1234.miracle.utils.AlbumController;
 import com.example.a1234.miracle.viewmodel.AlbumViewModel;
-import com.example.a1234.miracle.viewmodel.NewsCommentViewModel;
 import com.example.baselib.retrofit.data.ImageBean;
-import com.example.baselib.retrofit.data.MediaBean;
-import com.example.baselib.retrofit.data.MediaFolderBean;
+import com.example.baselib.widget.SpacesItemDecoration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-import butterknife.BindView;
 import butterknife.OnClick;
 
 /**

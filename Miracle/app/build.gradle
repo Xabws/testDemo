@@ -8,35 +8,30 @@ android {
     //signingConfigs 需要写在defaultConfig 和buildTypes 前面,不然编译的时候会报错
     signingConfigs {
         release {
-            storeFile file('/Users/wsbai/androidProject/android_sign_file/my-release-key.jks')
+            storeFile file('release.jks')
             storePassword '123456'
             keyAlias = 'key'
             keyPassword '123456'
         }
         debug {
-            storeFile file('/Users/wsbai/androidProject/android_sign_file/my-release-key.jks')
+            storeFile file('release.jks')
             storePassword '123456'
             keyAlias = 'key'
             keyPassword '123456'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion COMPILE_SDK_VERSION as int
     defaultConfig {
-        applicationId "com.example.a1234.miracle"
-        minSdkVersion 23
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        applicationId APPLICATION_ID
+        minSdkVersion MIN_SDK_VERSION as int
+        targetSdkVersion TARGET_SDK_VERSION as int
+        versionCode VERSION_CODE as int
+        versionName VERSION_NAME
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-   /* buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }*/
-
+    // 定义生成的apk的名称
+    def apkName;
     buildTypes {
         release {
             //是否混淆
@@ -44,11 +39,22 @@ android {
             //混淆的配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            // 定义release版本生成的apk的名字
+            apkName = "Miracle v" + VERSION_NAME + ".apk";
         }
         debug {
             signingConfig signingConfigs.debug
         }
     }
+
+    applicationVariants.all { variant ->    //批量修改Apk名字
+        variant.outputs.all { output ->
+            if (!variant.buildType.isDebuggable()) {
+                outputFileName = apkName;
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -68,12 +74,15 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     //android arch
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-    implementation "androidx.core:core-ktx:+"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
+    implementation 'androidx.core:core-ktx:+'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'org.jsoup:jsoup:1.10.3'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation "android.arch.navigation:navigation-fragment:1.0.0"
+    implementation "android.arch.navigation:navigation-ui:1.0.0"
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 }
 repositories {
     mavenCentral()

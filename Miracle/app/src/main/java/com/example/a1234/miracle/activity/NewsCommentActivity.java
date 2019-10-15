@@ -5,12 +5,12 @@ import android.view.View;
 
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.NewsCommentAdapter;
-import com.example.a1234.miracle.customview.FullyLinearLayoutManager2;
 import com.example.a1234.miracle.databinding.ActivityCommentBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
-import com.example.a1234.miracle.utils.ToastUtil;
 import com.example.a1234.miracle.viewmodel.NewsCommentViewModel;
 import com.example.baselib.retrofit.data.ZHCommendData;
+import com.example.baselib.utils.ToastUtil;
+import com.example.baselib.widget.FullyLinearLayoutManager2;
 
 import java.util.ArrayList;
 

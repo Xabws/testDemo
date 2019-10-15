@@ -3,11 +3,12 @@ package com.example.a1234.miracle.viewmodel;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.a1234.miracle.utils.AlbumController;
+import com.example.a1234.miracle.MyApplication;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ImageBean;
 import com.example.baselib.retrofit.data.MediaBean;
 import com.example.baselib.retrofit.data.MediaFolderBean;
+import com.example.baselib.utils.AlbumController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class AlbumViewModel extends BaseViewModel<ArrayList<ImageBean>> {
             }
             getFolderList();
         });
-        albumController.getAllMediaInfos();
+        albumController.getAllMediaInfos(MyApplication.getContext());
     }
 
     /**

@@ -2,11 +2,15 @@ package com.example.a1234.miracle.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +21,7 @@ import androidx.core.view.GravityCompat;
 
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,21 +30,19 @@ import android.widget.ImageView;
 import com.example.a1234.miracle.IMyAidlInterface;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.adapter.LatestAdapter;
-import com.example.a1234.miracle.customview.loadmorerecycleview.OnPullUpRefreshListener;
 import com.example.a1234.miracle.databinding.ActivityMainBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
+import com.example.a1234.miracle.receiver.ShowNotificationReceiver;
 import com.example.a1234.miracle.service.MiracleProcessService;
-import com.example.a1234.miracle.utils.blurkit.BlurKit;
 import com.example.a1234.miracle.viewmodel.ZHNewsViewModel;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ZHNewsListData;
-import com.example.baselib.retrofit.data.ZHStory;
+import com.example.baselib.utils.blurkit.BlurKit;
+import com.example.baselib.widget.loadmorerecycleview.OnPullUpRefreshListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -124,6 +127,26 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         init();
     }
 
+    private void initAlarmManager() {
+
+        // 循环时间
+        int TIME_INTERVAL = 1 * 60 * 1000;
+        //用AlarmManager定时发送广播
+        AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, ShowNotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // 此处必须使用SystemClock.elapsedRealtime，否则闹钟无法接收
+        long triggerAtMillis = SystemClock.elapsedRealtime() + TIME_INTERVAL;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            am.setExactAndAllowWhileIdle(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis,
+                    pendingIntent);
+        } else {
+            am.setExact(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtMillis, pendingIntent);
+        }
+        Log.d("ALarmManager: ", "开启闹钟");
+    }
+
+
     /**
      * 获取当天的新闻
      */
@@ -146,6 +169,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void init() {
         onNavigationHeadClick();
+        initAlarmManager();
         MainActivityPermissionsDispatcher.requestPermissionWithPermissionCheck(this);
         //设置toolbar标题文本
         activityMainBinding.include.toolbar.setTitle("首页");
@@ -197,6 +221,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     void requestPermission() {
     }
 
+    /**
+     * 侧滑栏
+     */
     private class DrawerToggle extends ActionBarDrawerToggle {
         public DrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar, int openDrawerContentDescRes, int closeDrawerContentDescRes) {
             super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
@@ -247,6 +274,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(new Intent(MainActivity.this, SocketActivity.class));
                 break;
             case R.id.nav_about:
+                startActivity(new Intent(MainActivity.this, DesignModeActivity.class));
                 break;
         }
         activityMainBinding.include.toolbar.setTitle(item.getTitle());

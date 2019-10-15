@@ -9,11 +9,10 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.CommentListLayoutBinding;
-import com.example.a1234.miracle.utils.DateFormatUtil;
 import com.example.baselib.retrofit.data.ZHCommendData;
+import com.example.baselib.utils.DateFormatUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.databinding.BindingAdapter;
 

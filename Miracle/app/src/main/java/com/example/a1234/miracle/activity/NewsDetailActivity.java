@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import com.example.a1234.miracle.R;
 import com.example.a1234.miracle.databinding.ActivityNewsDetailBinding;
 import com.example.a1234.miracle.eventbus.MessageEvent;
-import com.example.a1234.miracle.utils.HtmlUtil;
 import com.example.a1234.miracle.viewmodel.NewsDetailViewModel;
 import com.example.baselib.retrofit.data.ZHNewsDetail;
 import com.squareup.picasso.Picasso;

@@ -6,12 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.utils.DeviceUtil;
 import com.example.baselib.retrofit.data.ImageBean;
+import com.example.baselib.utils.DeviceUtil;
 
 import java.util.ArrayList;
 

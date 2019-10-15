@@ -12,21 +12,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.a1234.miracle.R;
-import com.example.a1234.miracle.customview.MyViewPager;
-import com.example.a1234.miracle.customview.PagerItemView;
-import com.example.a1234.miracle.customview.loadmorerecycleview.LoadMoreRecycleAdapter;
-import com.example.a1234.miracle.utils.LogUtils;
 import com.example.baselib.retrofit.data.ZHNewsListData;
-import com.example.baselib.retrofit.data.ZHStory;
-import com.example.baselib.retrofit.data.ZHTopStory;
+import com.example.baselib.widget.adapter.ViewPager2Adapter;
+import com.example.baselib.widget.loadmorerecycleview.LoadMoreRecycleAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import butterknife.BindView;

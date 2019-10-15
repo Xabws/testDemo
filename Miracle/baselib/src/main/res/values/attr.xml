@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TitleView">
+        <attr name="title_img" format="reference" /><!-- 图片地址 -->
+        <attr name="title_name" format="string" /><!--标题名称-->
+        <attr name="show_title_left" format="boolean" /><!--是否显示左返回键-->
+    </declare-styleable>
+
+    <declare-styleable name="DrawableCheckView">
+        <attr name="checked_drawable" format="reference" /><!-- 选中背景 -->
+        <attr name="unchecked_drawable" format="reference" /><!--未选中背景-->
+        <attr name="set_checked" format="boolean" /><!--是否选中状态-->
+    </declare-styleable>
+</resources>

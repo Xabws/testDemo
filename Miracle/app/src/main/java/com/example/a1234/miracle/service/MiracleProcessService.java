@@ -7,8 +7,11 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.example.a1234.miracle.IMyAidlInterface;
+import com.example.a1234.miracle.websocket.JWebSocketClient;
 
 import androidx.annotation.Nullable;
+
+import java.net.URI;
 
 /**
  * author: wsBai
@@ -23,7 +26,7 @@ public class MiracleProcessService extends Service {
 
         @Override
         public int add(int arg0, int arg1) throws RemoteException {
-            Log.d("MiracleProcessService_Processing: ",arg0+" "+arg1);
+            Log.d("Service_Processing: ",arg0+" "+arg1);
             return arg0 + arg1;
         }
     };
@@ -57,11 +60,8 @@ public class MiracleProcessService extends Service {
      */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        new Thread(() -> {
-            while (true) {
-                Log.d("ssssss", "MiracleProcessService_Processing");
-            }
-        }).start();
+        Log.d("MiracleProcessService::", "onStartCommand");
+
         return super.onStartCommand(intent, flags, startId);
     }
 
