@@ -22,6 +22,7 @@ import androidx.core.view.GravityCompat;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemClock;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +38,8 @@ import com.example.a1234.miracle.service.MiracleProcessService;
 import com.example.a1234.miracle.viewmodel.ZHNewsViewModel;
 import com.example.baselib.arch.viewmodel.BaseViewModel;
 import com.example.baselib.retrofit.data.ZHNewsListData;
+import com.example.baselib.retrofit.util.Base64Utils;
+import com.example.baselib.retrofit.util.RsaUtils;
 import com.example.baselib.utils.blurkit.BlurKit;
 import com.example.baselib.widget.loadmorerecycleview.OnPullUpRefreshListener;
 import com.google.android.material.navigation.NavigationView;
@@ -48,6 +51,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -197,6 +203,22 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         activityMainBinding.drawer.addDrawerListener(mDrawerToggle);
         activityMainBinding.navigationView.setNavigationItemSelectedListener(this);
         getNews();
+        String text = "HUAWEI,HMA-AL00,10,353615124688244";
+        String base64Sign =  Base64.encodeToString(text.getBytes(),Base64.DEFAULT);
+        Log.d("zxxxxxx",base64Sign);
+
+        byte[] bytes = Base64Utils.decode(base64Sign);
+        PublicKey publicKey;
+        PrivateKey privateKey;
+        try {
+            publicKey = RsaUtils.loadPublicKey(RsaUtils.LOCATION_PUBLIC);
+            privateKey = RsaUtils.loadPrivateKey(RsaUtils.LOCATION_PRIVATE);
+            String code = RsaUtils.encryptDataStr(bytes, publicKey);
+            String str = RsaUtils.decryptDataStr(Base64Utils.decode(code), privateKey);
+            Log.d("xzczxczczx", str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onNavigationHeadClick() {

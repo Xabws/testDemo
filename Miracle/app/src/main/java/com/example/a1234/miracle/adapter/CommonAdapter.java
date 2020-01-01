@@ -22,15 +22,15 @@ public abstract class CommonAdapter<DB extends ViewDataBinding, T> extends Recyc
      * Item点击回调
      */
     protected IAdapterClickInterface adapterClickInterface;
-    protected ArrayList<T> dataList;
+    protected List<T> dataList;
 
     private Context context;
 
-    public ArrayList<T> getDataList() {
+    public List<T> getDataList() {
         return dataList;
     }
 
-    public void setDataList(ArrayList<T> dataList) {
+    public void setDataList(List<T> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
@@ -41,7 +41,7 @@ public abstract class CommonAdapter<DB extends ViewDataBinding, T> extends Recyc
     }
 
 
-    public CommonAdapter(Context context, ArrayList<T> dataList, IAdapterClickInterface<DB, T> adapterClickInterface) {
+    public CommonAdapter(Context context, List<T> dataList, IAdapterClickInterface<DB, T> adapterClickInterface) {
         this.dataList = dataList;
         this.context = context;
         this.adapterClickInterface = adapterClickInterface;

@@ -74,7 +74,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     //android arch
     annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-    implementation 'androidx.core:core-ktx:+'
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:multidex:1.0.3'

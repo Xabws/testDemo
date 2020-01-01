@@ -24,6 +24,9 @@ import io.reactivex.disposables.Disposable;
  */
 public class BaseViewModel<T> extends AndroidViewModel {
     //生命周期观察的数据
+    // 1.MutableLiveData的父类是LiveData
+    //2.LiveData在实体类里可以通知指定某个字段的数据更新.
+    //3.MutableLiveData则是完全是整个实体类或者数据类型变化后才通知.不会细节到某个字段）
     protected MutableLiveData<T> liveObservableData = new MutableLiveData<>();
     //UI使用可观察的数据 ObservableField是一个包装类
     public ObservableField<T> uiObservableData = new ObservableField<>();

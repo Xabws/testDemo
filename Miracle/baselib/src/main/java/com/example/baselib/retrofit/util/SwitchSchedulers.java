@@ -18,6 +18,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+/**、
+ * 切换线程管理
+ */
 public class SwitchSchedulers {
     public static void unsubscribe(Disposable disposable) {
         if (disposable != null && !disposable.isDisposed()) {

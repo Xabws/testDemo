@@ -13,6 +13,7 @@ import com.example.baselib.retrofit.data.ImageBean;
 import com.example.baselib.utils.DeviceUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -25,11 +26,11 @@ import butterknife.OnClick;
  */
 public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.DrawerHolder> {
     private Context context;
-    private ArrayList<ImageBean> piclist;
+    private List<ImageBean> piclist;
     private OnItemClickListener onItemClickListener;
     private int currentPosition = 0;
 
-    public AlbumPagerAdapter(Context context, ArrayList<ImageBean> piclist, OnItemClickListener onItemClickListener) {
+    public AlbumPagerAdapter(Context context, List<ImageBean> piclist, OnItemClickListener onItemClickListener) {
         this.context = context;
         this.piclist = piclist;
         this.onItemClickListener = onItemClickListener;
@@ -55,7 +56,7 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
         return currentPosition;
     }
 
-    public ArrayList<ImageBean> getCurrentList() {
+    public List<ImageBean> getCurrentList() {
         return piclist;
     }
 
@@ -102,7 +103,7 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setPiclist(ArrayList<ImageBean> piclist) {
+    public void setPiclist(List<ImageBean> piclist) {
         this.piclist = piclist;
         notifyDataSetChanged();
     }

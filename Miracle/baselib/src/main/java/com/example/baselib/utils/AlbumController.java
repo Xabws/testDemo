@@ -148,6 +148,41 @@ public class AlbumController {
         }).start();
     }
 
+    public void getAllMediaInfosWithoutFolder(final Context context) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<MediaBean> mediaBeen = new ArrayList<>();
+                Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                String[] projImage = {MediaStore.Images.Media._ID
+                        , MediaStore.Images.Media.DATA
+                        , MediaStore.Images.Media.SIZE
+                        , MediaStore.Images.Media.DISPLAY_NAME};
+                Cursor mCursor = context.getContentResolver().query(mImageUri,
+                        projImage,
+                        MediaStore.Images.Media.MIME_TYPE + "=? or " + MediaStore.Images.Media.MIME_TYPE + "=?",
+                        new String[]{"image/jpeg", "image/png"},
+                        MediaStore.Images.Media.DATE_MODIFIED + " desc");
+                if (mCursor != null) {
+                    while (mCursor.moveToNext()) {
+                        // 获取图片的路径
+                        String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                        int size = mCursor.getInt(mCursor.getColumnIndex(MediaStore.Images.Media.SIZE)) / 1024;
+                        String displayName = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+                        mediaBeen.add(new MediaBean(MediaBean.Type.Image, path, size, displayName));
+                    }
+                    mCursor.close();
+                }
+                mediaCallback.onAllMediasWithoutFolder(mediaBeen);
+            }
+        }).start();
+    }
+
+    /**
+     * 获取所有媒体信息(文件夹分类)
+     *
+     * @param context
+     */
     public void getAllMediaInfos(final Context context) {
         new Thread(new Runnable() {
             @Override
@@ -254,6 +289,8 @@ public class AlbumController {
 
     public interface MediaCallback {
         void onAllMedias(HashMap<String, List<MediaBean>> allPhotos);
+
+        void onAllMediasWithoutFolder(List<MediaBean> allPhotos);
     }
 
 

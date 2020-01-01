@@ -33,9 +33,7 @@ public class ApiClient {
      * @return
      */
     public static DynamicApiService getDynamicDataService() {
-
         DynamicApiService dynamicApiService = ApiClient.initService("", DynamicApiService.class);
-
         return dynamicApiService;
     }
 

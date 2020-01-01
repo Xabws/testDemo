@@ -11,6 +11,7 @@ import com.example.baselib.retrofit.data.MediaFolderBean;
 import com.example.baselib.utils.AlbumController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,8 +23,8 @@ import androidx.lifecycle.MutableLiveData;
  * @author wsbai
  * @date 2019/3/29
  */
-public class AlbumViewModel extends BaseViewModel<ArrayList<ImageBean>> {
-    private MutableLiveData<ArrayList<ImageBean>> imagelist_livedata;
+public class AlbumViewModel extends BaseViewModel<List<ImageBean>> {
+    private MutableLiveData<List<ImageBean>> imagelist_livedata;
     private MutableLiveData<ImageBean> photo_livedata;
     private ArrayList<MediaFolderBean> folderlist;
     private int folderPosition = -1, picPosition = -1;
@@ -36,18 +37,32 @@ public class AlbumViewModel extends BaseViewModel<ArrayList<ImageBean>> {
     private void getPics() {
         imagelist_livedata = new MutableLiveData<>();
         photo_livedata = new MutableLiveData<>();
-        AlbumController albumController = new AlbumController(allPhotos -> {
-            //key:文件夹，value：文件夹内容
-            folderlist = new ArrayList<>();
-            for (Map.Entry<String, List<MediaBean>> entry : allPhotos.entrySet()) {
-                String FolerName = entry.getKey().substring(entry.getKey().lastIndexOf("/") + 1);
-                MediaFolderBean mediaFolderBean = new MediaFolderBean(FolerName, entry.getKey(), entry.getValue());
-                folderlist.add(mediaFolderBean);
+        AlbumController albumController = new AlbumController(new AlbumController.MediaCallback() {
+            @Override
+            public void onAllMedias(HashMap<String, List<MediaBean>> allPhotos) {
+                //key:文件夹，value：文件夹内容
+                folderlist = new ArrayList<>();
+                for (Map.Entry<String, List<MediaBean>> entry : allPhotos.entrySet()) {
+                    String FolerName = entry.getKey().substring(entry.getKey().lastIndexOf("/") + 1);
+                    MediaFolderBean mediaFolderBean = new MediaFolderBean(FolerName, entry.getKey(), entry.getValue());
+                    folderlist.add(mediaFolderBean);
+                }
+               // getFolderList();
             }
-            getFolderList();
+
+            @Override
+            public void onAllMediasWithoutFolder(List<MediaBean> allPhotos) {
+                ArrayList<ImageBean> list = new ArrayList<>();
+                for (int i = 0; i < allPhotos.size(); i++) {
+                    ImageBean imageBean = new ImageBean(allPhotos.get(i).getDisplayname(), allPhotos.get(i).getPath());
+                    list.add(imageBean);
+                }
+                imagelist_livedata.postValue(list);
+            }
         });
-        albumController.getAllMediaInfos(MyApplication.getContext());
+        albumController.getAllMediaInfosWithoutFolder(MyApplication.getContext());
     }
+
 
     /**
      * 获取相册封面图片列表
@@ -89,7 +104,7 @@ public class AlbumViewModel extends BaseViewModel<ArrayList<ImageBean>> {
     }
 
     @Override
-    public LiveData<ArrayList<ImageBean>> getLiveObservableData() {
+    public LiveData<List<ImageBean>> getLiveObservableData() {
         return imagelist_livedata;
     }
 
