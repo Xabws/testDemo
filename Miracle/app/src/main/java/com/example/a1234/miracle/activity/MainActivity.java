@@ -278,7 +278,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         int id = item.getItemId();
         switch (id) {
             case R.id.nav_notification:
-                startActivity(new Intent(MainActivity.this, Demo1Activity.class));
+                startActivity(new Intent(MainActivity.this,GoogleMapActivity.class));
+               // startActivity(new Intent(MainActivity.this, Demo1Activity.class));
                 break;
             case R.id.nav_message:
                 startActivity(new Intent(MainActivity.this, Fake3DActivity.class));

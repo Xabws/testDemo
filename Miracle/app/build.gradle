@@ -82,6 +82,10 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui:1.0.0"
     implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+//    地图操作工具类，添加标记等
+    api 'com.google.maps.android:android-maps-utils:0.5'
 }
 repositories {
     mavenCentral()
