@@ -24,9 +24,14 @@ import androidx.lifecycle.MutableLiveData;
  * @date 2019/3/29
  */
 public class AlbumViewModel extends BaseViewModel<List<ImageBean>> {
+    public static final int ALBUMTYPE_ALL_PICS = 0;
+    public static final int ALBUMTYPE_ALL_FOLDERS = 1;
+
     private MutableLiveData<List<ImageBean>> imagelist_livedata;
     private MutableLiveData<ImageBean> photo_livedata;
     private ArrayList<MediaFolderBean> folderlist;
+    private AlbumController albumController;
+    private int currentType = ALBUMTYPE_ALL_FOLDERS;
     private int folderPosition = -1, picPosition = -1;
 
     public AlbumViewModel(@NonNull Application application) {
@@ -37,7 +42,7 @@ public class AlbumViewModel extends BaseViewModel<List<ImageBean>> {
     private void getPics() {
         imagelist_livedata = new MutableLiveData<>();
         photo_livedata = new MutableLiveData<>();
-        AlbumController albumController = new AlbumController(new AlbumController.MediaCallback() {
+        albumController = new AlbumController(new AlbumController.MediaCallback() {
             @Override
             public void onAllMedias(HashMap<String, List<MediaBean>> allPhotos) {
                 //key:文件夹，value：文件夹内容
@@ -47,45 +52,60 @@ public class AlbumViewModel extends BaseViewModel<List<ImageBean>> {
                     MediaFolderBean mediaFolderBean = new MediaFolderBean(FolerName, entry.getKey(), entry.getValue());
                     folderlist.add(mediaFolderBean);
                 }
-               // getFolderList();
+                ArrayList<ImageBean> list = new ArrayList<>();
+                for (int i = 0; i < folderlist.size(); i++) {
+                    ImageBean imageBean = new ImageBean(folderlist.get(i).getFloderName(), folderlist.get(i).getFolderContent().get(0).getPath(),true);
+                    list.add(imageBean);
+                }
+                imagelist_livedata.postValue(list);
             }
 
             @Override
             public void onAllMediasWithoutFolder(List<MediaBean> allPhotos) {
                 ArrayList<ImageBean> list = new ArrayList<>();
                 for (int i = 0; i < allPhotos.size(); i++) {
-                    ImageBean imageBean = new ImageBean(allPhotos.get(i).getDisplayname(), allPhotos.get(i).getPath());
+                    ImageBean imageBean = new ImageBean(allPhotos.get(i).getDisplayname(), allPhotos.get(i).getPath(),false);
                     list.add(imageBean);
                 }
                 imagelist_livedata.postValue(list);
             }
         });
-        albumController.getAllMediaInfosWithoutFolder(MyApplication.getContext());
+        // albumController.getAllMediaInfosWithoutFolder(MyApplication.getContext());
+        albumController.getAllMediaInfos(MyApplication.getContext());
     }
 
+    public int getCurrentType() {
+        return currentType;
+    }
 
     /**
      * 获取相册封面图片列表
      */
     public void getFolderList() {
-        ArrayList<ImageBean> list = new ArrayList<>();
-        for (int i = 0; i < folderlist.size(); i++) {
-            ImageBean imageBean = new ImageBean(folderlist.get(i).getFloderName(), folderlist.get(i).getFolderContent().get(0).getPath());
-            list.add(imageBean);
-        }
-        imagelist_livedata.postValue(list);
+        albumController.getAllMediaInfos(MyApplication.getContext());
+
+    }
+
+    /**
+     * 获取所有图片列表
+     */
+    public void getAllPics() {
+        albumController.getAllMediaInfosWithoutFolder(MyApplication.getContext());
     }
 
     /**
      * 获取相册文件夹内列表
      *
-     * @param position
      */
-    public void getPicList(int position) {
-        this.folderPosition = position;
+    public void getPicList(String name) {
+        for (int i=0;i<folderlist.size();i++){
+            if (folderlist.get(i).getFloderUrl().contains(name)){
+                this.folderPosition = i;
+            }
+        }
         ArrayList<ImageBean> list = new ArrayList<>();
-        for (int i = 0; i < folderlist.get(position).getFolderContent().size(); i++) {
-            ImageBean imageBean = new ImageBean(folderlist.get(position).getFolderContent().get(i).getDisplayname(), folderlist.get(position).getFolderContent().get(i).getPath());
+        for (int i = 0; i < folderlist.get(folderPosition).getFolderContent().size(); i++) {
+            ImageBean imageBean = new ImageBean(folderlist.get(folderPosition).getFolderContent().get(i).getDisplayname(), folderlist.get(folderPosition).getFolderContent().get(i).getPath(),false);
             list.add(imageBean);
         }
         imagelist_livedata.postValue(list);
@@ -98,7 +118,7 @@ public class AlbumViewModel extends BaseViewModel<List<ImageBean>> {
      */
     public void getPic(int position) {
         this.picPosition = position;
-        ImageBean imageBean = new ImageBean(folderlist.get(folderPosition).getFolderContent().get(position).getDisplayname(), folderlist.get(folderPosition).getFolderContent().get(position).getPath());
+        ImageBean imageBean = new ImageBean(folderlist.get(folderPosition).getFolderContent().get(position).getDisplayname(), folderlist.get(folderPosition).getFolderContent().get(position).getPath(),false);
         photo_livedata.postValue(imageBean);
 
     }

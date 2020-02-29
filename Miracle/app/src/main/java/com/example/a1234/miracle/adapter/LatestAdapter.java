@@ -22,9 +22,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class LatestAdapter extends LoadMoreRecycleAdapter {
     private Context context;
@@ -120,34 +117,27 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
 
 
     static class PagerHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.view_pager)
         ViewPager2 view_pager;
 
         public PagerHolder(View itemView) {
+
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            view_pager = itemView.findViewById(R.id.view_pager);
         }
     }
 
     static class DrawerHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.rl_main)
         CardView rl_main;
-        @BindView(R.id.iv_cover)
         ImageView ivCover;
-        @BindView(R.id.tv_title)
         TextView tvTitle;
 
         public DrawerHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+          rl_main = view.findViewById(R.id.rl_main);
+          ivCover = view.findViewById(R.id.iv_cover);
+          tvTitle = view.findViewById(R.id.tv_title);
         }
     }
-
-    @OnClick({R.id.ll})
-    public void onViewClicked() {
-    }
-
-
     public interface OnItemClickListener {
         void onItemClick(int newsId);
     }
@@ -168,7 +158,6 @@ public class LatestAdapter extends LoadMoreRecycleAdapter {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int value =(int)animation.getAnimatedValue();
-                Log.d("xxxxxx",value+"");
                 viewPager2.setCurrentItem(value);
             }
         });

@@ -68,9 +68,7 @@ dependencies {
     api 'com.facebook.fresco:fresco:1.9.0'
     //api 'com.android.support:palette-v7:27.1.1'
     //google推出的基于recycleview的viewpager
-    api 'androidx.viewpager2:viewpager2:1.0.0-beta05'
-    //butterknife
-    api 'com.jakewharton:butterknife:8.4.0'
+    api 'androidx.viewpager2:viewpager2:1.0.0'
     //权限生成框架
     api('com.github.hotchemi:permissionsdispatcher:3.1.0') { exclude module: 'support-v13' }
     //Android 长连接
@@ -101,5 +99,7 @@ dependencies {
     api 'org.jsoup:jsoup:1.10.3'
     //全剧通知Toast
     api 'com.hjq:toast:8.0'
+    //点击下拉菜单spinner
+    api 'com.github.arcadefire:nice-spinner:1.4.4'
 
 }

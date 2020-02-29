@@ -19,7 +19,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import butterknife.OnClick;
+
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * author: wsBai
@@ -30,6 +35,9 @@ public class AlbumAcitcity extends BaseActivity {
     private AlbumAdapter adapter;
     private AlbumPagerAdapter albumPagerAdapter;
     private AlbumViewModel viewModel;
+    private List<ImageBean> folderNameList;
+    public static final String PICTURE_ALL_IMGS = "0";
+//    public static final String PICTURE_ALL_FOLDERS = "1";
 
     @Override
     public int getContentViewId() {
@@ -43,6 +51,7 @@ public class AlbumAcitcity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+
         activityAlbumBinding = DataBindingUtil.setContentView(this, getContentViewId());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(AlbumAcitcity.this, 3);
         activityAlbumBinding.rvAlbum.setLayoutManager(gridLayoutManager);
@@ -52,7 +61,7 @@ public class AlbumAcitcity extends BaseActivity {
             public void onItemClick(AlbumLayoutBinding binding, ImageBean imageBean, int position) {
                 showBigPics(position);
             }
-        }, AlbumAdapter.TYPE_FOLDER);
+        });
 
         activityAlbumBinding.setAdapterFolder(adapter);
         viewModel = ViewModelProviders.of(AlbumAcitcity.this).get(AlbumViewModel.class);
@@ -64,16 +73,42 @@ public class AlbumAcitcity extends BaseActivity {
             }
         });
         activityAlbumBinding.setViewpager2Adapter(albumPagerAdapter);
+        activityAlbumBinding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        //显示文字标题需要重写ImageBean中的toString方法
+        activityAlbumBinding.niceSpinner.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
+            @Override
+            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
+                ImageBean imageBean = folderNameList.get(position);
+                //切换至所有图片
+               /* if (imageBean.getName().equals(PICTURE_ALL_FOLDERS)) {
+                   // adapter.setCurrentType(AlbumAdapter.TYPE_FOLDER);
+                    viewModel.getFolderList();
+                } else*/
+                if (imageBean.getUrl().equals(PICTURE_ALL_IMGS)) {
+                    //adapter.setCurrentType(AlbumAdapter.TYPE_PHOTO);
+                    viewModel.getAllPics();
+                } else {
+                    //  adapter.setCurrentType(AlbumAdapter.TYPE_PHOTO);
+                    viewModel.getPicList(imageBean.getName());
+                }
+
+            }
+        });
     }
 
     private void showBigPics(int position) {
-        if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
+      /*  if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
             adapter.setCurrentType(AlbumAdapter.TYPE_PHOTO);
             viewModel.getPicList(position);
-        }else{
+        } else {
             activityAlbumBinding.rvPager.setVisibility(View.VISIBLE);
             albumPagerAdapter.setPiclist(adapter.getDataList());
-        }
+        }*/
 
     }
 
@@ -88,14 +123,6 @@ public class AlbumAcitcity extends BaseActivity {
         super.onDestroy();
     }
 
-    @OnClick(R.id.iv_back)
-    public void onViewClicked() {
-        if (adapter.getCurrentType() == AlbumAdapter.TYPE_FOLDER) {
-            finish();
-        } else {
-            // adapter.setType(AlbumAdapter.TYPE_FOLDER);
-        }
-    }
 
     /**
      * 订阅数据变化来刷新UI
@@ -106,9 +133,16 @@ public class AlbumAcitcity extends BaseActivity {
         /**
          * 相册封面和图片列表
          */
-        model.getLiveObservableData().observe(this, ImageBean -> {
-            Log.d("all_folders", ImageBean.toString());
-            adapter.setDataList(ImageBean);
+        model.getLiveObservableData().observe(this, ImageBeanList -> {
+            Log.d("folders", ImageBeanList.toString());
+            adapter.setDataList(ImageBeanList);
+            if (folderNameList == null) {
+                folderNameList = new ArrayList<>();
+                folderNameList.add(new ImageBean("全部图片", PICTURE_ALL_IMGS, false));
+//        folderNameList.add(new ImageBean("全部相册", PICTURE_ALL_FOLDERS, true));
+                folderNameList.addAll(ImageBeanList);
+                activityAlbumBinding.niceSpinner.attachDataSource(folderNameList);
+            }
             // adapter.setType(AlbumAdapter.TYPE_FOLDER);
         });
 

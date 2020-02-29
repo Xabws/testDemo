@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.baselib.R;
 
 
@@ -94,6 +95,7 @@ public abstract class LoadMoreRecycleAdapter<VH extends RecyclerView.ViewHolder>
         FootViewHolder(View itemView) {
             super(itemView);
             mLoadImg = (ImageView) itemView.findViewById(R.id.iv_load_icon);
+            Glide.with(itemView.getContext()).load(R.drawable.loading_cat).into(mLoadImg);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

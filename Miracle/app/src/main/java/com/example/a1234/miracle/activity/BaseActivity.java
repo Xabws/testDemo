@@ -15,8 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 public abstract class BaseActivity extends AppCompatActivity {
 //    private Unbinder unbinder;

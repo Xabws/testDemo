@@ -9,19 +9,18 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.databinding.DataBindingUtil;
+
 import com.example.a1234.miracle.R;
+import com.example.a1234.miracle.databinding.AcitivityBigimageBinding;
 import com.example.baselib.utils.ImageUtils;
 import com.example.baselib.widget.CardDialog;
 import com.squareup.picasso.Picasso;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
 public class BigImageAcitivity extends BaseActivity {
-    @BindView(R.id.iv_image)
-    ImageView ivImage;
+  AcitivityBigimageBinding acitivityBigimageBinding;
 
     @Override
     public int getContentViewId() {
@@ -30,14 +29,21 @@ public class BigImageAcitivity extends BaseActivity {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        acitivityBigimageBinding = DataBindingUtil.setContentView(this,getContentViewId());
         String url = getIntent().getStringExtra("image");
         if (url != null && !TextUtils.isEmpty(url))
-            Picasso.get().load(url).into(ivImage);
-        ivImage.setOnLongClickListener(new View.OnLongClickListener() {
+            Picasso.get().load(url).into(acitivityBigimageBinding.ivImage);
+        acitivityBigimageBinding.ivImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                savePics(ivImage.getDrawable());
+                savePics(acitivityBigimageBinding.ivImage.getDrawable());
                 return true;
+            }
+        });
+        acitivityBigimageBinding.ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }
@@ -46,13 +52,9 @@ public class BigImageAcitivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+
     }
 
-    @OnClick(R.id.iv_image)
-    public void onViewClicked() {
-        finish();
-    }
 
     /**
      * 长按保存图片

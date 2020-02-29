@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                // startActivity(new Intent(MainActivity.this, Demo1Activity.class));
                 break;
             case R.id.nav_message:
-                startActivity(new Intent(MainActivity.this, Fake3DActivity.class));
+                startActivity(new Intent(MainActivity.this, LoadingActivitiy.class));
                 break;
             case R.id.nav_manage:
                 startActivity(new Intent(MainActivity.this, AlbumAcitcity.class));

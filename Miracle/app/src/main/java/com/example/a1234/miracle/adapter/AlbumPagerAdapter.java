@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * author: wsBai
@@ -80,19 +77,16 @@ public class AlbumPagerAdapter extends RecyclerView.Adapter<AlbumPagerAdapter.Dr
     }
 
     static class DrawerHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.image)
+
         ImageView image;
 
         public DrawerHolder(View view) {
             super(view);
-            ButterKnife.bind(this, view);
+            image = view.findViewById(R.id.image);
         }
     }
 
-    @OnClick({R.id.image})
-    public void onViewClicked() {
 
-    }
 
 
     public interface OnItemClickListener {

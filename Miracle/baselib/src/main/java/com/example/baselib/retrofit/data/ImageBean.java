@@ -7,11 +7,21 @@ package com.example.baselib.retrofit.data;
 public class ImageBean {
     private String name;
     private String url;
+    private boolean isfloder = false;
 
 
-    public ImageBean(String name, String url) {
+    public ImageBean(String name, String url,boolean isfloder) {
         this.name = name;
         this.url = url;
+        this.isfloder = isfloder;
+    }
+
+    public boolean isIsfloder() {
+        return isfloder;
+    }
+
+    public void setIsfloder(boolean isfloder) {
+        this.isfloder = isfloder;
     }
 
     public String getName() {
@@ -32,9 +42,6 @@ public class ImageBean {
 
     @Override
     public String toString() {
-        return "ImageBean{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        return name;
     }
 }

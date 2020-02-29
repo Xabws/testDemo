@@ -20,19 +20,19 @@ import androidx.databinding.BindingAdapter;
  * date: 2019/2/18
  */
 public class AlbumAdapter extends CommonAdapter<AlbumLayoutBinding, ImageBean> {
-    public static final int TYPE_FOLDER = 0;//文件夹目录
+//    public static final int TYPE_FOLDER = 0;//文件夹目录
     public static final int TYPE_PHOTO = 1;//图片目录
-    private int currentType = TYPE_FOLDER;
+//    private int currentType = TYPE_FOLDER;
 
-    public AlbumAdapter(Context context, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface, int currentType) {
+    public AlbumAdapter(Context context, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface) {
         super(context, adapterClickInterface);
-        this.currentType = currentType;
+//        this.currentType = currentType;
     }
 
 
-    public AlbumAdapter(Context context, ArrayList<ImageBean> dataList, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface, int currentType) {
+    public AlbumAdapter(Context context, ArrayList<ImageBean> dataList, IAdapterClickInterface<AlbumLayoutBinding, ImageBean> adapterClickInterface) {
         super(context, dataList, adapterClickInterface);
-        this.currentType = currentType;
+//        this.currentType = currentType;
     }
 
     @Override
@@ -58,11 +58,11 @@ public class AlbumAdapter extends CommonAdapter<AlbumLayoutBinding, ImageBean> {
         Glide.with(imageView.getContext()).load(url).override(s.getWidth() / 3, s.getWidth() / 3).placeholder(R.mipmap.ic_launcher).into(imageView);
     }
 
-    public int getCurrentType() {
+   /* public int getCurrentType() {
         return currentType;
     }
 
     public void setCurrentType(int currentType) {
         this.currentType = currentType;
-    }
+    }*/
 }
