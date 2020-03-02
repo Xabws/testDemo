@@ -101,5 +101,6 @@ dependencies {
     api 'com.hjq:toast:8.0'
     //点击下拉菜单spinner
     api 'com.github.arcadefire:nice-spinner:1.4.4'
-
+    //折线图
+    api 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

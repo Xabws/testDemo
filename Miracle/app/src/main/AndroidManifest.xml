@@ -28,7 +28,7 @@
         <activity android:name=".activity.NewsDetailActivity"></activity>
         <activity android:name=".activity.NewsCommentActivity"></activity>
         <activity android:name=".activity.BigImageAcitivity"></activity>
-        <activity android:name=".activity.LoadingActivitiy"></activity>
+        <activity android:name=".activity.LineChartActivity"></activity>
         <activity android:name=".activity.AlbumAcitcity"></activity>
         <activity android:name=".activity.ThreadTestActivity"></activity>
         <activity android:name=".activity.WebViewActivity"></activity>
