@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
@@ -52,13 +53,21 @@ public class LineChartActivity extends BaseActivity {
         Glide.with(this)
                 .load(R.drawable.loading_cat)
                 .into(acitivityLoadingBinding.ivLoading);
-
-
+        acitivityLoadingBinding.ivLoading.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Random r = new Random();
+                int randow = r.nextInt(31);
+                acitivityLoadingBinding.linechart.moveViewToAnimated(randow, 0, acitivityLoadingBinding.linechart.getAxisRight().getAxisDependency(), 1000);
+                Toast.makeText(LineChartActivity.this, randow + "", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initLineChart() {
-        //设置左右上下不留边
-        acitivityLoadingBinding.linechart.setViewPortOffsets(0, 0, 0, 0);
+        //设置左右留边20dp上下不留边
+        acitivityLoadingBinding.linechart.setViewPortOffsets(Utils.convertDpToPixel(20), 0, Utils.convertDpToPixel(20), 0);
+        acitivityLoadingBinding.linechart.setExtraOffsets(0,0,0,0);
         acitivityLoadingBinding.linechart.setBackgroundColor(Color.rgb(104, 241, 175));
 
         // 关闭描述文字
@@ -75,27 +84,38 @@ public class LineChartActivity extends BaseActivity {
         acitivityLoadingBinding.linechart.getLegend().setEnabled(false);
         //设置样式
         YAxis rightAxis = acitivityLoadingBinding.linechart.getAxisRight();
-
         //设置图表右边的y轴禁用
         rightAxis.setEnabled(false);
         YAxis leftAxis = acitivityLoadingBinding.linechart.getAxisLeft();
         //设置图表左边的y轴禁用
-        leftAxis.setEnabled(false);
+        leftAxis.setEnabled(true);
+        leftAxis.setAxisMinimum(-20);
+        leftAxis.setAxisMaximum(50);
+        leftAxis.setDrawZeroLine(false);
+        leftAxis.setTextColor(Color.TRANSPARENT);
+        leftAxis.setAxisLineColor(Color.TRANSPARENT);
+        leftAxis.setDrawGridLines(false);
         //设置x轴
         XAxis xAxis = acitivityLoadingBinding.linechart.getXAxis();
         xAxis.setEnabled(true);
         //x轴设置为底部(图表内)
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-        xAxis.setGridColor(Color.WHITE);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGridColor(Color.TRANSPARENT);
+        xAxis.setAxisLineColor(Color.TRANSPARENT);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(11f);
         //开启x轴对应点虚线
-        xAxis.enableGridDashedLine(10f, 10f, 0f);
+        //xAxis.enableGridDashedLine(10f, 10f, 0f);
         setData();
         //在封装完数据之后，再设置它最大值。(用于自由滑动)
         //注意这两步顺序一定不能错！不然会闪退的。
         xAxis.setAxisMaximum(mlist.size() - 1);
         //显示一个屏幕所展示的最大个数
         acitivityLoadingBinding.linechart.setVisibleXRange(0, 7);
+        // acitivityLoadingBinding.linechart.setViewPortOffsets(Utils.convertDpToPixel(15), 0, Utils.convertDpToPixel(15), 0);
         acitivityLoadingBinding.linechart.invalidate();
+        acitivityLoadingBinding.linechart.moveViewToX(18);
     }
 
     private void notifyLineChart() {
@@ -104,8 +124,8 @@ public class LineChartActivity extends BaseActivity {
     }
 
     private void setData() {
-        int count = 20;
-        int range = 30;
+        int count = 31;
+        int range = 50;
         mlist = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
@@ -119,7 +139,7 @@ public class LineChartActivity extends BaseActivity {
         if (acitivityLoadingBinding.linechart.getData() != null &&
                 acitivityLoadingBinding.linechart.getData().getDataSetCount() > 0) {
             set1 = (LineDataSet) acitivityLoadingBinding.linechart.getData().getDataSetByIndex(0);
-            set1.setValues(mlist);
+            set1.setEntries(mlist);
             set1.notifyDataSetChanged();
             acitivityLoadingBinding.linechart.getData().notifyDataChanged();
             acitivityLoadingBinding.linechart.notifyDataSetChanged();
@@ -137,7 +157,6 @@ public class LineChartActivity extends BaseActivity {
             // line thickness and point size
             set1.setLineWidth(3f);
             set1.setCircleRadius(6f);
-
             set1.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);//设置曲线类型为圆滑曲线
             // draw points as solid circles
             set1.setDrawCircleHole(false);

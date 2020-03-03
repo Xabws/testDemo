@@ -68,6 +68,7 @@ android {
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
     api project(':baselib')
+    api project(':MPChartLib')
     //权限申请工具
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
     //butterknife
